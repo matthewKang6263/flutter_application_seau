@@ -2,19 +2,13 @@ import 'package:flutter/material.dart';
 
 class InfoCard extends StatelessWidget {
   final String title;
-  final IconData icon1;
-  final String text1;
-  final IconData icon2;
-  final String text2;
+  final Widget content;
   final VoidCallback onTap;
 
   const InfoCard({
     super.key,
     required this.title,
-    required this.icon1,
-    required this.text1,
-    required this.icon2,
-    required this.text2,
+    required this.content,
     required this.onTap,
   });
 
@@ -23,7 +17,7 @@ class InfoCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Card(
-        elevation: 4, // 카드 전체에 그림자 적용
+        elevation: 4, // 부드러운 그림자 효과
         margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
@@ -33,7 +27,7 @@ class InfoCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // 제목
+              // 1. 카드 제목
               Text(
                 title,
                 style: TextStyle(
@@ -42,28 +36,20 @@ class InfoCard extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 10),
-              // 아이콘과 텍스트가 있는 Row
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                // 콘텐츠와 화살표를 세로 중앙 정렬
                 children: [
-                  Row(
-                    children: [
-                      Icon(icon1, color: Colors.blue),
-                      SizedBox(width: 5),
-                      Text(
-                        text1,
-                        style: TextStyle(fontSize: 16),
-                      ),
-                      SizedBox(width: 20),
-                      Icon(icon2, color: Colors.blue),
-                      SizedBox(width: 5),
-                      Text(
-                        text2,
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ],
+                  // 2. 콘텐츠
+                  Expanded(
+                    child: content,
                   ),
-                  Icon(Icons.arrow_forward_ios, color: Colors.grey),
+                  // 3. 화살표 아이콘
+                  Icon(
+                    Icons.arrow_forward_ios,
+                    color: Colors.grey,
+                    size: 20,
+                  ),
                 ],
               ),
             ],

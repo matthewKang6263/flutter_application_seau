@@ -71,10 +71,36 @@ class MyPage extends StatelessWidget {
             // 레벨 정보 카드
             InfoCard(
               title: '레벨 정보',
-              icon1: Icons.verified,
-              text1: 'Lv.2',
-              icon2: Icons.waves,
-              text2: '프리다이버',
+              content: Padding(
+                padding: EdgeInsets.symmetric(vertical: 5),
+                child: Row(
+                  children: [
+                    // 첫 번째 아이콘과 텍스트
+                    Row(
+                      children: [
+                        Icon(Icons.verified, color: Colors.blue),
+                        SizedBox(width: 5),
+                        Text(
+                          'Lv.2',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ],
+                    ),
+                    SizedBox(width: 20),
+                    // 두 번째 아이콘과 텍스트
+                    Row(
+                      children: [
+                        Icon(Icons.waves, color: Colors.blue),
+                        SizedBox(width: 5),
+                        Text(
+                          '프리다이버',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
               onTap: () {
                 Navigator.push(
                   context,
