@@ -17,7 +17,9 @@ class InfoCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Card(
-        elevation: 4, // 부드러운 그림자 효과
+        color: Colors.white,
+        elevation: 2, // 부드러운 그림자
+        shadowColor: Colors.grey.withOpacity(0.2), // 그림자 색상 연하게
         margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
