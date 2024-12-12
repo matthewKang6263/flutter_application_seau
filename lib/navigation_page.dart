@@ -18,27 +18,29 @@ class NavigationPage extends StatelessWidget {
           children: [
             ElevatedButton(
               onPressed: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => WelcomePage())),
+                  MaterialPageRoute(builder: (context) => const WelcomePage())),
               child: const Text('웰컴페이지'),
             ),
             ElevatedButton(
-              onPressed: () => Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => MyPage())),
+              onPressed: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const MyPage())),
               child: const Text('마이페이지'),
             ),
             ElevatedButton(
-              onPressed: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => CalendarPage())),
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const CalendarPage())),
               child: const Text('캘린더페이지'),
             ),
             ElevatedButton(
-              onPressed: () => Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => ChatPage())),
+              onPressed: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const ChatPage())),
               child: const Text('채팅페이지'),
             ),
             ElevatedButton(
-              onPressed: () => Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => HomePage())),
+              onPressed: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const HomePage())),
               child: const Text('홈페이지'),
             ),
           ],
