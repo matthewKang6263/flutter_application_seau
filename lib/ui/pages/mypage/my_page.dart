@@ -3,6 +3,7 @@ import 'package:flutter_application_seau/ui/pages/certification/certification_pa
 import 'package:flutter_application_seau/ui/pages/mypage/edit_page.dart';
 import 'package:flutter_application_seau/ui/pages/mypage/widgets/info_card.dart';
 import 'package:flutter_application_seau/ui/widgets/primary_button.dart';
+import 'package:flutter_application_seau/ui/widgets/user_profile_image.dart';
 
 class MyPage extends StatelessWidget {
   const MyPage({super.key});
@@ -31,17 +32,13 @@ class MyPage extends StatelessWidget {
                 // 프로필 섹션 콘텐츠 1. 프로필이미지 2. 사용자닉네임 3. 사용자주소 4. 수정버튼
                 children: [
                   SizedBox(height: 20),
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundColor: Colors.blue[200],
-                    child: Icon(
-                      Icons.person,
-                      size: 50,
-                      color: Colors.white,
-                    ),
+                  UserProfileImage(
+                    dimension: 100,
+                    imgUrl: '',
+                    onEdit: () {}, // 프로필 이미지 수정 로직 추가!
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 30,
                   ),
                   Text(
                     '닉네임',

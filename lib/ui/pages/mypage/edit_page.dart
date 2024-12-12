@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_seau/ui/pages/address_search/address_search_page.dart';
 import 'package:flutter_application_seau/ui/widgets/primary_button.dart';
+import 'package:flutter_application_seau/ui/widgets/user_profile_image.dart';
 
 class EditPage extends StatelessWidget {
   const EditPage({super.key});
@@ -26,44 +27,23 @@ class EditPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 20),
-            // 프로필 이미지
+            // 1. 프로필 이미지
             Center(
-              child: Stack(
-                children: [
-                  CircleAvatar(
-                    radius: 60,
-                    backgroundColor: Colors.blue[200],
-                    child: const Icon(
-                      Icons.person,
-                      size: 60,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: CircleAvatar(
-                      backgroundColor: Colors.blue,
-                      radius: 18,
-                      child: IconButton(
-                        icon: const Icon(Icons.edit,
-                            size: 18, color: Colors.white),
-                        onPressed: () {
-                          // 프로필 이미지 수정 로직
-                        },
-                      ),
-                    ),
-                  ),
-                ],
+              child: UserProfileImage(
+                dimension: 100,
+                imgUrl: '', // 이미지 URL이 없으면 기본 아이콘 표시
+                onEdit: () {
+                  // 프로필 이미지 수정 로직
+                },
               ),
             ),
             const SizedBox(height: 40),
-            // 위치 입력 필드
+            // 2. 위치 입력 필드
             GestureDetector(
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AddressSearchPage()),
+                  MaterialPageRoute(builder: (context) => AddressSearchPage()), // [가입-위치설정]페이지로 이동
                 );
               },
               child: const CustomTextField(
@@ -74,13 +54,13 @@ class EditPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 25),
-            // 아이디 입력 필드
+            // 3. 아이디 입력 필드
             const CustomTextField(
               label: '아이디',
               hintText: 'akeetuitui',
             ),
             const SizedBox(height: 25),
-            // 이메일 입력 필드
+            // 4. 이메일 입력 필드
             const CustomTextField(
               label: '이메일',
               hintText: 'divinglover@gmail.com',
