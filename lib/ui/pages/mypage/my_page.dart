@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_seau/ui/pages/certification/certification_page.dart';
+import 'package:flutter_application_seau/ui/pages/mypage/edit_page.dart';
 import 'package:flutter_application_seau/ui/pages/mypage/widgets/info_card.dart';
 import 'package:flutter_application_seau/ui/widgets/primary_button.dart';
 
@@ -27,7 +28,7 @@ class MyPage extends StatelessWidget {
               color: Colors.white, // 프로필 섹션 배경 색상
               padding: EdgeInsets.only(bottom: 40), // 프로필 섹션 하단 패딩
               child: Column(
-                // 프로필 섹션 콘텐츠 1. 프로필이미지 2. 사용자닉네임 3. 사용자주소
+                // 프로필 섹션 콘텐츠 1. 프로필이미지 2. 사용자닉네임 3. 사용자주소 4. 수정버튼
                 children: [
                   SizedBox(height: 20),
                   CircleAvatar(
@@ -66,7 +67,11 @@ class MyPage extends StatelessWidget {
                       ),
                       child: PrimaryButton(
                         text: '프로필 수정',
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => EditPage()),);
+                        },
                         backgroundColor: Colors.white,
                       ),
                     ),
