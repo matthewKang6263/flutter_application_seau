@@ -1,66 +1,57 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_application_seau/ui/pages/join/join_page.dart';
+import 'package:flutter_application_seau/ui/widgets/primary_button.dart';
+
 class WelcomePage extends StatelessWidget {
+  const WelcomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: SizedBox.expand(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              children: [
-                Spacer(),
-                Image.asset(
-                  'assets/welcome.png',
-                  height: 250,
-                ),
-                Text(
-                  '당신 근처의 마켓',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  '동네라서 가능한 모든것\n지금 내 동네를 선택하고 시작해보세요!',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 16,
-                  ),
-                ),
-                Spacer(),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(
-                      builder: (context) {
-                        return AddressSearchPage();
-                      },
-                    ));
-                  },
-                  child: Text('시작하기'),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(
-                      builder: (context) {
-                        return LoginPage();
-                      },
-                    ));
-                  },
-                  child: Container(
-                    height: 50,
-                    color: Colors.transparent,
-                    alignment: Alignment.center,
-                    child: Text(
-                      '이미 계정이 있나요? 로그인',
-                      style: TextStyle(color: Colors.grey),
-                    ),
-                  ),
-                )
-              ],
-            ),
+      body: Stack(
+        children: [
+          // 배경 이미지
+          Image.asset(
+            "assets/images/welcome_bg.png",
+            fit: BoxFit.cover,
+            width: double.infinity,
+            height: double.infinity,
           ),
-        ),
+          Column(
+            children: [
+              const Spacer(), // 상단 여백
+              // 로고와 텍스트
+              Column(
+                children: [
+                  // 로고 이미지
+                  Image.asset(
+                    "assets/images/logo_deepdive.png",
+                    width: 160,
+                  ),
+                ],
+              ),
+              const Spacer(),
+              const SizedBox(height: 40),
+              // 시작하기 버튼
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 40),
+                child: PrimaryButton(
+                  text: "가입하기",
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const JoinPage(),
+                      ),
+                    );
+                  },
+                  backgroundColor: const Color(0xFF0770E9),
+                ),
+              ),
+            ],
+          )
+        ],
       ),
     );
   }
