@@ -4,9 +4,23 @@ import 'package:flutter_application_seau/ui/pages/mypage/edit_page.dart';
 import 'package:flutter_application_seau/ui/pages/mypage/widgets/info_card.dart';
 import 'package:flutter_application_seau/ui/widgets/primary_button.dart';
 import 'package:flutter_application_seau/ui/widgets/user_profile_image.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class MyPage extends StatelessWidget {
   const MyPage({super.key});
+
+
+    void _showToast(String message) {
+    Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.black87,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -64,8 +78,14 @@ class MyPage extends StatelessWidget {
                       ),
                       child: PrimaryButton(
                         text: '프로필 수정',
-                        onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => EditPage()),);
+                        onPressed: () async {
+                          final result = await Navigator.push(
+                            context, MaterialPageRoute(builder: (context) => EditPage() // 버튼 클릭 시 페이지 이동
+                          ),
+                          );
+                          if (result == true){
+                            _showToast('수정이 완료되었습니다.'); // 반환 값이 true면 토스트 메시지 표시
+                          }
                         },
                         backgroundColor: Colors.white,
                       ),

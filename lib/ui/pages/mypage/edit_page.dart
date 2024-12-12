@@ -71,7 +71,7 @@ class EditPage extends StatelessWidget {
             PrimaryButton(
               text: '수정하기',
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.pop(context, true); // true 값 반환, 수정 완료됨을 알림
               },
               backgroundColor: const Color(0xFF0770E9), // 버튼 색상
             ),
