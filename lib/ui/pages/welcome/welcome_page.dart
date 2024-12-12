@@ -34,7 +34,7 @@ class WelcomePage extends StatelessWidget {
               const Spacer(),
               // 시작하기 버튼
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 18),
                 child: PrimaryButton(
                   text: "가입하기",
                   onPressed: () {
@@ -48,9 +48,11 @@ class WelcomePage extends StatelessWidget {
                   backgroundColor: const Color(0xFF0770E9),
                 ),
               ),
+              // 버튼 사이 간격 추가
+              const SizedBox(height: 12),
               // 로그인하기 버튼 (투명)
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 18),
                 child: TextButton(
                   onPressed: () {
                     Navigator.push(
@@ -66,7 +68,6 @@ class WelcomePage extends StatelessWidget {
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color: Colors.white, // 글자색은 흰색
-                      decoration: TextDecoration.underline, // 밑줄 추가
                     ),
                   ),
                 ),
