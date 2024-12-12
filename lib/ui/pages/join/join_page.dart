@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_seau/ui/pages/address_search/address_search_page.dart';
 import 'package:flutter_application_seau/ui/widgets/primary_button.dart';
 
 class JoinPage extends StatelessWidget {
@@ -71,7 +72,12 @@ class JoinPage extends StatelessWidget {
                   PrimaryButton(
                     text: "다음",
                     onPressed: () {
-                      // 완료 버튼 동작 정의
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AddressSearchPage(),
+                        ),
+                      );
                     },
                     backgroundColor: const Color(0xFF0770E9), // 기존 버튼 색상
                   ),

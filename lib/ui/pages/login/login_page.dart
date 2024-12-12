@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_seau/ui/pages/home/home_page.dart';
 import 'package:flutter_application_seau/ui/widgets/primary_button.dart';
 
 class LoginPage extends StatelessWidget {
@@ -50,7 +51,12 @@ class LoginPage extends StatelessWidget {
             PrimaryButton(
               text: "완료",
               onPressed: () {
-                // 완료 버튼 동작 정의
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const HomePage(),
+                  ),
+                ); // 완료 버튼 동작 정의
               },
               backgroundColor: const Color(0xFF0770E9), // 기존 버튼 색상
             ),
