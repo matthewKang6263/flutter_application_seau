@@ -68,9 +68,7 @@ class MyPage extends StatelessWidget {
                       child: PrimaryButton(
                         text: '프로필 수정',
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => EditPage()),);
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => EditPage()),);
                         },
                         backgroundColor: Colors.white,
                       ),
