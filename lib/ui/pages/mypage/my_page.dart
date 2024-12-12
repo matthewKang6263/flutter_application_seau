@@ -14,10 +14,12 @@ class MyPage extends StatelessWidget {
         elevation: 0, // 그림자 제거
       ),
       body: Column(
-        children: [ // 상단 프로필 섹션
+        children: [ 
+          // 상단 프로필 섹션
           Container(
             color: Colors.white, // 프로필 섹션 배경 색상
-            child: Column( // 프로필 섹션 콘텐츠 1. 프로필이미지 2. 사용자닉네임 3. 사용자주소
+            child: Column( 
+              // 프로필 섹션 콘텐츠 1. 프로필이미지 2. 사용자닉네임 3. 사용자주소
               children: [ 
                 CircleAvatar(  
                   radius: 50,
@@ -42,11 +44,20 @@ class MyPage extends StatelessWidget {
                 ),
                 ),
                 SizedBox(height: 20),
-                PrimaryButton(
-                  text: '프로필 수정',
-                  onPressed: (){},
-                  backgroundColor: Colors.white,
+                // 프로필 수정 버튼
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 30),
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey, width: 1.5),
                   ),
+                  child: PrimaryButton( 
+                    text: '프로필 수정',
+                    onPressed: (){},
+                    backgroundColor: Colors.white,
+                    ),
+                  ),
+                ),
               ],
             ),
           )
