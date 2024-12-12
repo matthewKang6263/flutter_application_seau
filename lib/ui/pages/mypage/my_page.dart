@@ -25,10 +25,11 @@ class MyPage extends StatelessWidget {
             // 상단: 프로필 섹션
             Container(
               color: Colors.white, // 프로필 섹션 배경 색상
+              padding: EdgeInsets.only(bottom: 40), // 프로필 섹션 하단 패딩
               child: Column(
                 // 프로필 섹션 콘텐츠 1. 프로필이미지 2. 사용자닉네임 3. 사용자주소
                 children: [
-                  SizedBox(height: 15),
+                  SizedBox(height: 20),
                   CircleAvatar(
                     radius: 50,
                     backgroundColor: Colors.blue[200],
@@ -39,7 +40,7 @@ class MyPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: 15,
+                    height: 20,
                   ),
                   Text(
                     '닉네임',
@@ -53,7 +54,7 @@ class MyPage extends StatelessWidget {
                   ),
                   Text(
                     '서울시 강동구 명일동',
-                    style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                    style: TextStyle(fontSize: 16, color: Colors.black),
                   ),
                   SizedBox(height: 20),
                   // 프로필 수정 버튼
