@@ -9,9 +9,14 @@ class MyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.grey[200],
+        backgroundColor: Colors.grey[100],
         appBar: AppBar(
-          title: Text('나의 프로필'),
+          title: Text('나의 프로필',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold
+          ),
+          ),
           backgroundColor: Colors.white,
           elevation: 0, // 그림자 제거
         ),
@@ -23,6 +28,7 @@ class MyPage extends StatelessWidget {
               child: Column(
                 // 프로필 섹션 콘텐츠 1. 프로필이미지 2. 사용자닉네임 3. 사용자주소
                 children: [
+                  SizedBox(height: 15),
                   CircleAvatar(
                     radius: 50,
                     backgroundColor: Colors.blue[200],
