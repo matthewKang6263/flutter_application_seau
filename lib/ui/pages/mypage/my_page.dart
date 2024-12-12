@@ -22,7 +22,7 @@ class MyPage extends StatelessWidget {
         ),
         body: Column(
           children: [
-            // 상단 프로필 섹션
+            // 상단: 프로필 섹션
             Container(
               color: Colors.white, // 프로필 섹션 배경 색상
               child: Column(
@@ -74,7 +74,8 @@ class MyPage extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20),
-            // 레벨 정보 카드
+          
+            // 하단: 레벨 정보 카드
             InfoCard(
               title: '레벨 정보',
               content: Padding(
@@ -92,7 +93,7 @@ class MyPage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(width: 20),
+                    SizedBox(width: 30),
                     // 두 번째 아이콘과 텍스트
                     Row(
                       children: [
