@@ -9,8 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 class MyPage extends StatelessWidget {
   const MyPage({super.key});
 
-
-    void _showToast(String message) {
+  void _showToast(String message) {
     Fluttertoast.showToast(
       msg: message,
       toastLength: Toast.LENGTH_SHORT,
@@ -21,17 +20,14 @@ class MyPage extends StatelessWidget {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.grey[100],
         appBar: AppBar(
-          title: Text('나의 프로필',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold
-          ),
+          title: Text(
+            '나의 프로필',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           backgroundColor: Colors.white,
           elevation: 0, // 그림자 제거
@@ -80,11 +76,15 @@ class MyPage extends StatelessWidget {
                         text: '프로필 수정',
                         onPressed: () async {
                           final result = await Navigator.push(
-                            context, MaterialPageRoute(builder: (context) => EditPage() // 버튼 클릭 시 페이지 이동
-                          ),
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    EditPage() // 버튼 클릭 시 페이지 이동
+                                ),
                           );
-                          if (result == true){
-                            _showToast('수정이 완료되었습니다.'); // 반환 값이 true면 토스트 메시지 표시
+                          if (result == true) {
+                            _showToast(
+                                '수정이 완료되었습니다.'); // 반환 값이 true면 토스트 메시지 표시
                           }
                         },
                         backgroundColor: Colors.white,
@@ -95,7 +95,7 @@ class MyPage extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20),
-          
+
             // 하단: 레벨 정보 카드
             InfoCard(
               title: '레벨 정보',
