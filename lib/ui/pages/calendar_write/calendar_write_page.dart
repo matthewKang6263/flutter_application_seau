@@ -33,7 +33,9 @@ class CalendarWritePage extends StatelessWidget {
         '${selectedDate.year}년 ${selectedDate.month}월 ${selectedDate.day}일 ${getKoreanWeekday(selectedDate.weekday)}요일';
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Text('일정 등록', style: TextStyle(fontSize: 16)),
       ),
       body: SafeArea(

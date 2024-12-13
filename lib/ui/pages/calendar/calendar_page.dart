@@ -71,7 +71,9 @@ class _CalendarPageState extends State<CalendarPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Text('나의 캘린더', style: TextStyle(fontSize: 16)),
         centerTitle: true,
         actions: [
