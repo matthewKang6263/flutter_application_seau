@@ -23,6 +23,7 @@ class HomeBottomNavigationBar extends StatelessWidget {
         fontWeight: FontWeight.bold,
       ),
       unselectedLabelStyle: const TextStyle(fontSize: 12),
+      selectedItemColor: const Color(0xFF0770E9), // 선택된 항목 색상
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.home_outlined),
