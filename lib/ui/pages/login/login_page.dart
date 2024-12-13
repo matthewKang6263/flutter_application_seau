@@ -51,7 +51,7 @@ class LoginPage extends StatelessWidget {
             PrimaryButton(
               text: "완료",
               onPressed: () {
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                     builder: (context) => const HomePage(),

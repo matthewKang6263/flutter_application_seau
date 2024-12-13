@@ -2,12 +2,18 @@ import 'package:flutter/material.dart';
 
 class PrimaryButton extends StatelessWidget {
   final String text;
+  final TextStyle? textStyle;
   final VoidCallback? onPressed;
   final Color backgroundColor;
 
   const PrimaryButton({
     super.key,
     required this.text,
+    this.textStyle = const TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+    ), // nullable, 텍스트스타일을 전달받지 않았을 때 정해진 스타일 사용(기본값)
     required this.onPressed,
     required this.backgroundColor,
   });
@@ -24,14 +30,7 @@ class PrimaryButton extends StatelessWidget {
         ),
         elevation: 0, // 음영 제거
       ),
-      child: Text(
-        text,
-        style: const TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
-      ),
+      child: Text(text, style: textStyle),
     );
   }
 }

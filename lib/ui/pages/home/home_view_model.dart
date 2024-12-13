@@ -1,20 +1,13 @@
-// // 1. 상태클래스 만들기
-// // 2. 뷰모델 만들기
-// import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-// class HomeViewModel extends AutoDisposeNotifier<int> {
-//   @override
-//   int build() {
-//     return 0;
-//   }
+class HomeViewModel extends AutoDisposeNotifier<int> {
+  @override
+  int build() => 0; // 초기 상태는 첫 번째 탭
 
-//   void onIndexChanged(int newIndex) {
-//     state = newIndex;
-//   }
-// }
+  void onIndexChanged(int newIndex) {
+    state = newIndex; // 새 인덱스로 상태 업데이트
+  }
+}
 
-// // 3. 뷰모델 관리자 만들기
-
-// final homeViewModel = NotifierProvider.autoDispose<HomeViewModel, int>(() {
-//   return HomeViewModel();
-// });
+final homeViewModel =
+    NotifierProvider.autoDispose<HomeViewModel, int>(() => HomeViewModel());

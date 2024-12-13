@@ -1,30 +1,3 @@
-// import 'package:flutter/material.dart';
-
-// class UserProfileImage extends StatelessWidget {
-//   const UserProfileImage({
-//     super.key,
-//     required this.dimension,
-//     required this.imgUrl,
-//   });
-
-//   final double dimension;
-//   final String imgUrl;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return SizedBox.square(
-//       dimension: dimension,
-//       child: ClipRRect(
-//         borderRadius: BorderRadius.circular(100),
-//         child: Image.network(
-//           imgUrl,
-//           fit: BoxFit.cover,
-//         ),
-//       ),
-//     );
-//   }
-// }
-
 import 'package:flutter/material.dart';
 
 class UserProfileImage extends StatelessWidget {
@@ -50,9 +23,10 @@ class UserProfileImage extends StatelessWidget {
           CircleAvatar(
             radius: dimension / 2,
             backgroundColor: Colors.blue[100],
-            backgroundImage: imgUrl != null && imgUrl!.isNotEmpty // 이미지 url 유무 판별
-                ? NetworkImage(imgUrl!)
-                : null,
+            backgroundImage:
+                imgUrl != null && imgUrl!.isNotEmpty // 이미지 url 유무 판별
+                    ? NetworkImage(imgUrl!)
+                    : null,
             child: imgUrl == null || imgUrl!.isEmpty
                 ? const Icon(Icons.person, size: 60, color: Colors.white)
                 : null,
