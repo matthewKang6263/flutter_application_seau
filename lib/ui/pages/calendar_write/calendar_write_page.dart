@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_seau/ui/pages/calendar/widgets/input_field.dart';
 
 class CalendarWritePage extends StatelessWidget {
   final DateTime selectedDate; // 선택된 날짜를 받아오는 변수 추가
@@ -36,54 +37,49 @@ class CalendarWritePage extends StatelessWidget {
       ),
       body: SafeArea(
         child: Column(
+          // SafeArea의 child를 Column으로 변경
           children: [
             Expanded(
+              // 기존 Expanded 유지
               child: SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextField(
+                      InputField(
                         controller: nameController,
-                        decoration: InputDecoration(
-                          labelText: '이름 입력',
-                          hintText: '예시) 나의 버디',
-                        ),
+                        label: '상품이름',
+                        hintText: '예시) 나의 버디',
                       ),
                       SizedBox(height: 16),
-                      TextField(
+                      InputField(
                         controller: dateController,
-                        enabled: false, // 날짜 필드를 수정 불가능하게 설정
-                        decoration: InputDecoration(
-                          labelText: '날짜',
-                          prefixIcon: Icon(Icons.calendar_today),
-                        ),
+                        label: '날짜',
+                        suffixIcon: Icons.calendar_today,
+                        enabled: false,
                       ),
                       SizedBox(height: 16),
-                      TextField(
+                      InputField(
                         controller: timeController,
-                        decoration: InputDecoration(
-                          labelText: '시간 입력',
-                          hintText: '예시) 오후 2:00',
-                          prefixIcon: Icon(Icons.access_time),
-                        ),
+                        label: '시간 입력',
+                        hintText: '예시) 오후 2:00',
+                        suffixIcon: Icons.access_time,
                       ),
                       SizedBox(height: 16),
-                      TextField(
+                      InputField(
                         controller: locationController,
-                        decoration: InputDecoration(
-                          labelText: '장소 입력',
-                          hintText: '예시) 서울 강남구',
-                          prefixIcon: Icon(Icons.location_on),
-                        ),
+                        label: '장소 입력',
+                        hintText: '예시) 서울 강남구',
+                        suffixIcon: Icons.location_on,
                       ),
+                      SizedBox(height: 20),
                     ],
                   ),
                 ),
               ),
             ),
             Padding(
+              // 버튼 추가
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
               child: ElevatedButton(
                 onPressed: () {
