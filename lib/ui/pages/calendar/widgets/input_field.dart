@@ -24,7 +24,7 @@ class InputField extends StatelessWidget {
         Text(
           label,
           style: TextStyle(
-            fontSize: 14,
+            fontSize: 13,
             fontWeight: FontWeight.w500,
             color: Colors.black87,
           ),
@@ -39,13 +39,14 @@ class InputField extends StatelessWidget {
               hintText: hintText,
               hintStyle: TextStyle(
                 color: Colors.grey[400],
-                fontSize: 14,
+                fontSize: 16,
               ),
               filled: true,
               fillColor: Color.fromRGBO(247, 247, 247, 1),
               contentPadding: EdgeInsets.symmetric(horizontal: 16),
               suffixIcon: suffixIcon != null
-                  ? Icon(suffixIcon, color: Colors.grey[600], size: 20)
+                  ? Icon(suffixIcon,
+                      color: Color.fromRGBO(181, 181, 181, 1), size: 20)
                   : null,
               border: OutlineInputBorder(
                 borderSide: BorderSide.none,

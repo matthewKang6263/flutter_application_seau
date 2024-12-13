@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_seau/ui/pages/calendar/widgets/input_field.dart';
+import 'package:flutter_application_seau/ui/pages/calendar/widgets/select_field.dart';
 
 class CalendarWritePage extends StatelessWidget {
   final DateTime selectedDate; // 선택된 날짜를 받아오는 변수 추가
@@ -45,32 +46,46 @@ class CalendarWritePage extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Text(
+                        '다이빙 일정을 등록하세요',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 30),
                       InputField(
                         controller: nameController,
-                        label: '상품이름',
+                        label: '버디 이름',
                         hintText: '예시) 나의 버디',
                       ),
                       SizedBox(height: 16),
                       InputField(
                         controller: dateController,
-                        label: '날짜',
+                        label: '선택한 날짜',
                         suffixIcon: Icons.calendar_today,
                         enabled: false,
                       ),
                       SizedBox(height: 16),
                       InputField(
                         controller: timeController,
-                        label: '시간 입력',
+                        label: '시간 선택',
                         hintText: '예시) 오후 2:00',
                         suffixIcon: Icons.access_time,
                       ),
                       SizedBox(height: 16),
-                      InputField(
+                      // InputField(
+                      //   controller: locationController,
+                      //   label: '장소 선택',
+                      //   hintText: '예시) 서울 강남구',
+                      //   suffixIcon: Icons.location_on,
+                      // ),
+                      SelectField(
+                        label: "장소 선택",
                         controller: locationController,
-                        label: '장소 입력',
-                        hintText: '예시) 서울 강남구',
-                        suffixIcon: Icons.location_on,
+                        items: ["용인 딥스테이션", "시흥 파라다이브", "성남 아쿠아라인"],
                       ),
                       SizedBox(height: 20),
                     ],
