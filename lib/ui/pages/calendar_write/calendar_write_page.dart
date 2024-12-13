@@ -71,7 +71,7 @@ class CalendarWritePage extends StatelessWidget {
                       SizedBox(height: 16),
                       InputField(
                         controller: timeController,
-                        label: '시간 선택',
+                        label: '입장 시간',
                         hintText: '예시) 오후 2:00',
                         suffixIcon: Icons.access_time,
                       ),
@@ -87,14 +87,12 @@ class CalendarWritePage extends StatelessWidget {
                         controller: locationController,
                         items: ["용인 딥스테이션", "시흥 파라다이브", "성남 아쿠아라인"],
                       ),
-                      SizedBox(height: 20),
                     ],
                   ),
                 ),
               ),
             ),
             Padding(
-              // 버튼 추가
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
               child: ElevatedButton(
                 onPressed: () {
