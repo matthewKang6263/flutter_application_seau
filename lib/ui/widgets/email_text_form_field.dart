@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class NicknameTextFormField extends StatelessWidget {
-  const NicknameTextFormField({super.key});
+class EmailTextFormField extends StatelessWidget {
+  const EmailTextFormField({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -9,7 +9,7 @@ class NicknameTextFormField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          "닉네임", // 텍스트 필드 상단의 제목
+          "이메일", // 텍스트 필드 상단의 제목
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w500,

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_seau/ui/pages/address_search/address_search_page.dart';
 import 'package:flutter_application_seau/ui/widgets/primary_button.dart';
+import 'package:flutter_application_seau/ui/widgets/nickname_text_form_field.dart';
+import 'package:flutter_application_seau/ui/widgets/email_text_form_field.dart';
+import 'package:flutter_application_seau/ui/widgets/pw_text_form_field.dart';
 
 class JoinPage extends StatelessWidget {
   const JoinPage({super.key});
@@ -53,20 +56,13 @@ class JoinPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 40),
                   // 아이디 입력 필드
-                  const CustomTextField(
-                    label: "아이디",
-                  ),
+                  const NicknameTextFormField(),
                   const SizedBox(height: 16),
                   // 이메일 입력 필드
-                  const CustomTextField(
-                    label: "이메일",
-                  ),
+                  const EmailTextFormField(),
                   const SizedBox(height: 16),
                   // 비밀번호 입력 필드
-                  const CustomTextField(
-                    label: "비밀번호",
-                    obscureText: true,
-                  ),
+                  const PwTextFormField(),
                   const Spacer(), // 아래 여백 확보
                   // 완료 버튼
                   PrimaryButton(
@@ -88,50 +84,6 @@ class JoinPage extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class CustomTextField extends StatelessWidget {
-  final String label;
-  final bool obscureText;
-
-  const CustomTextField({
-    super.key,
-    required this.label,
-    this.obscureText = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label, // 텍스트 필드 상단의 제목
-          style: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-            color: Colors.black87,
-          ),
-        ),
-        const SizedBox(height: 8), // 제목과 필드 간 간격
-        TextField(
-          obscureText: obscureText,
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: const Color(0xFFF6F6F6), // 필드 배경색
-            contentPadding: const EdgeInsets.symmetric(
-              vertical: 10, // 위아래 여백을 줄임 (기본값보다 작게)
-              horizontal: 12, // 좌우 여백
-            ),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(6),
-              borderSide: BorderSide.none,
-            ),
-          ),
-        ),
-      ],
     );
   }
 }
