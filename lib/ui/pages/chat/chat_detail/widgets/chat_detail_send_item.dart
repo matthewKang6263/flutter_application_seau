@@ -20,26 +20,27 @@ class ChatDetailSendItem extends StatelessWidget {
         children: [
           // 메시지 말풍선
           Container(
+            constraints: BoxConstraints(maxWidth: 208),
             padding: EdgeInsets.symmetric(
-              horizontal: 12,
-              vertical: 8,
+              horizontal: 16,
+              vertical: 16,
             ),
             decoration: BoxDecoration(
-              color: Colors.blue[100], // 보낸 메시지는 파란색 계열로
+              color: Color(0xFF0770E9), // 보낸 메시지는 파란색 계열로
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(12),
-                topRight: Radius.circular(4), // 오른쪽 상단만 덜 둥글게
-                bottomLeft: Radius.circular(12),
-                bottomRight: Radius.circular(12),
+                topLeft: Radius.circular(16),
+                topRight: Radius.circular(0), // 오른쪽 상단만 덜 둥글게
+                bottomLeft: Radius.circular(16),
+                bottomRight: Radius.circular(16),
               ),
             ),
             child: Text(
               content,
               style: TextStyle(
                 fontSize: 14,
+                fontWeight: FontWeight.normal,
                 height: 1.4,
-                color: Colors.black87, // 텍스트 색상 추가
-                letterSpacing: -0.2, // 자간 조정
+                color: Colors.white, // 텍스트 색상 추가
               ),
             ),
           ),

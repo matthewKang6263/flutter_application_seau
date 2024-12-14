@@ -22,7 +22,10 @@ class ChatDetailPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          ChatDetailBody(userImg: userImg),
+          ChatDetailBody(
+            userImg: userImg,
+            userName: userName,
+          ),
           ChatDetailInput(),
         ],
       ),

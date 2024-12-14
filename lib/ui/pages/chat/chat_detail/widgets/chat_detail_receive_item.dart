@@ -11,12 +11,14 @@ class ChatDetailReceiveItem extends StatelessWidget {
   final bool showProfile; // 연속된 메시지일 경우 프로필을 숨기기 위한 flag
   final String content;
   final DateTime dateTime;
+  final String userName;
 
   const ChatDetailReceiveItem({
     required this.imgUrl,
     required this.showProfile,
     required this.content,
     required this.dateTime,
+    required this.userName,
   });
 
   @override
@@ -35,29 +37,51 @@ class ChatDetailReceiveItem extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(height: 4),
               // 메시지 말풍선
               Container(
+                constraints: BoxConstraints(maxWidth: 208),
                 padding: EdgeInsets.symmetric(
                   horizontal: 12,
-                  vertical: 8,
+                  vertical: 12,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.grey[200],
+                  // 테두리 설정
+                  border: Border.all(
+                    color: Colors.grey[300]!, // 테두리 색상
+                    width: 1.0, // 테두리 두께
+                  ),
+                  // 둥근 모서리 설정 (필요한 경우)
                   borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(4),
-                    topRight: Radius.circular(12),
-                    bottomLeft: Radius.circular(12),
-                    bottomRight: Radius.circular(12),
+                    topLeft: Radius.circular(0), // 왼쪽 위
+                    topRight: Radius.circular(16), // 오른쪽 위
+                    bottomLeft: Radius.circular(16), // 왼쪽 아래
+                    bottomRight: Radius.circular(16),
                   ),
                 ),
-                child: Text(
-                  content,
-                  style: TextStyle(
-                    fontSize: 14,
-                    height: 1.4,
-                    color: Colors.black87,
-                    letterSpacing: -0.2,
-                  ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      userName,
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 4),
+                    Container(
+                      child: Text(
+                        content,
+                        style: TextStyle(
+                          fontSize: 14,
+                          height: 1.4,
+                          color: Colors.black87,
+                          letterSpacing: -0.2,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               SizedBox(height: 4),
