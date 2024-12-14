@@ -91,9 +91,10 @@ class UserProfileImage extends StatelessWidget {
           CircleAvatar(
             radius: dimension / 2,
             backgroundImage: imgUrl != null && imgUrl!.isNotEmpty
-                ? NetworkImage(imgUrl!)
-                : AssetImage('assets/default_profile_image.png'),
-            // 프로필 이미지 없는 경우 기본 이미지 가져오도록 에셋 연결
+                // URL이 있으면 네트워크 이미지 사용
+                ? NetworkImage(imgUrl!) as ImageProvider
+                // URL이 없으면 로컬 기본 이미지 사용
+                : AssetImage('assets/images/default_profile_image.png'),
           ),
           //
           // 수정 아이콘

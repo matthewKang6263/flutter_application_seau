@@ -7,7 +7,7 @@ import 'package:flutter_application_seau/ui/widgets/user_profile_image.dart';
 
 class ChatDetailReceiveItem extends StatelessWidget {
   // 프로필 이미지 URL, 이미지 표시 여부, 메시지 내용, 시간을 받아옵니다
-  final String imgUrl;
+  final String? imgUrl;
   final bool showProfile; // 연속된 메시지일 경우 프로필을 숨기기 위한 flag
   final String content;
   final DateTime dateTime;

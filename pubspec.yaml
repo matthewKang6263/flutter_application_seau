@@ -96,3 +96,4 @@ flutter:
   assets:
     - assets/images/welcome_bg.png
     - assets/images/logo_deepdive.png
+    - assets/images/default_profile_image.png

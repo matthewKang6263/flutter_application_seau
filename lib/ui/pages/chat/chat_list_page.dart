@@ -17,16 +17,19 @@ class ChatListPage extends StatelessWidget {
             sender: '다이빙 러버',
             message: '좋습니다! 시간과 장소 모두 괜찮아요.',
             time: '오후 12:30',
+            imgUrl: "https://picsum.photos/200/300",
           ),
           ChatListItem(
             sender: '버디버디',
             message: '오후에 만나기로 했어요!',
             time: '오후 1:00',
+            imgUrl: "",
           ),
           ChatListItem(
             sender: '체코시당',
             message: '조금 늦을 수 있어요.',
             time: '오후 2:15',
+            imgUrl: null,
           ),
         ],
       ),
@@ -38,11 +41,13 @@ class ChatListItem extends StatelessWidget {
   final String sender;
   final String message;
   final String time;
+  final String? imgUrl;
 
   ChatListItem({
     required this.sender,
     required this.message,
     required this.time,
+    required this.imgUrl,
   });
 
   @override
@@ -55,9 +60,10 @@ class ChatListItem extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) {
-                return ChatDetailPage();
-              },
+              builder: (context) => ChatDetailPage(
+                userName: sender,
+                userImg: imgUrl,
+              ),
             ),
           );
         },
@@ -68,6 +74,7 @@ class ChatListItem extends StatelessWidget {
             // UserProfileImage 위젯에서 dimension 값 추가
             UserProfileImage(
               dimension: 32, // 프로필 이미지의 크기를 설정
+              imgUrl: imgUrl,
             ),
             //
             SizedBox(width: 16),
