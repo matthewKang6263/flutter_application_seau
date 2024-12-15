@@ -31,6 +31,7 @@ dependencies:
   flutter:
     sdk: flutter
   fluttertoast: ^8.2.8
+  firebase_auth: ^5.3.4
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -95,3 +96,4 @@ flutter:
   assets:
     - assets/images/welcome_bg.png
     - assets/images/logo_deepdive.png
+    - assets/images/default_profile_image.png

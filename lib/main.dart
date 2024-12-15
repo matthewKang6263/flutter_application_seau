@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_seau/firebase_options.dart';
+import 'package:flutter_application_seau/ui/pages/chat/chat_list_page.dart';
+import 'package:flutter_application_seau/ui/pages/home/home_page.dart';
 import 'package:flutter_application_seau/ui/pages/welcome/welcome_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -9,7 +11,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const ProviderScope(child: MyApp()));
+  runApp(ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -17,8 +19,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: WelcomePage(),
-    );
+    return MaterialApp(
+        home:
+            // WelcomePage(),
+            // ChatListPage.new());
+            HomePage());
   }
 }
