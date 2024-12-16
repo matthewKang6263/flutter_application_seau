@@ -8,6 +8,10 @@ class EditPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // final locationController = TextEditingController($my page..);
+    // final idController = TextEditingController($);
+    // final mailController = TextEditingController($);
+
     return Scaffold(
       backgroundColor: Colors.white, // 전체 화면 흰색 배경
       appBar: AppBar(
@@ -40,17 +44,21 @@ class EditPage extends StatelessWidget {
             const SizedBox(height: 40),
             // 2. 위치 입력 필드
             GestureDetector(
+              behavior: HitTestBehavior.translucent,
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => AddressSearchPage()), // [가입-위치설정]페이지로 이동
                 );
               },
-              child: const CustomTextField(
-                label: '위치',
-                hintText: '서울시 강동구 명일동',
-                prefixIcon: Icons.search,
-                readOnly: true,
+              child: IgnorePointer( // 이벤트를 child가 가져가지 않도록 방지
+                ignoring: true,
+                child: const CustomTextField(
+                  label: '위치',
+                  hintText: '서울시 강동구 명일동',
+                  prefixIcon: Icons.search,
+                  readOnly: true,
+                ),
               ),
             ),
             const SizedBox(height: 25),
@@ -70,7 +78,8 @@ class EditPage extends StatelessWidget {
             // 수정하기 버튼
             PrimaryButton(
               text: '수정하기',
-              onPressed: () {
+              onPressed: () { 
+                // 세 가지 texteditingcontroller의 value 혹은 text 가져다가 firestore에 업데이트 (이게 이루어지면, pop true값 반환 & 실패하면 알림 띄우거나 머무르는 작업)
                 Navigator.pop(context, true); // true 값 반환, 수정 완료됨을 알림
               },
               backgroundColor: const Color(0xFF0770E9), // 버튼 색상
@@ -85,6 +94,7 @@ class EditPage extends StatelessWidget {
 
 // CustomTextField 위젯
 class CustomTextField extends StatelessWidget {
+  // final TextEditingController textcontroller;
   final String label;
   final String? hintText;
   final bool obscureText; // 비밀번호 입력 여부
@@ -93,6 +103,7 @@ class CustomTextField extends StatelessWidget {
 
   const CustomTextField({
     super.key,
+    // required this.textcontroller,
     required this.label,
     this.hintText,
     this.obscureText = false,
@@ -116,6 +127,7 @@ class CustomTextField extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         TextField(
+          // controller: textcontroller, 
           // 텍스트필드
           obscureText: obscureText,
           readOnly: readOnly,

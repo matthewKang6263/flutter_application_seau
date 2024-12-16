@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_seau/ui/pages/certification/certification_page.dart';
+import 'package:flutter_application_seau/ui/pages/home/_tab/my_tab/widgets/my_tab_app_bar.dart';
 import 'package:flutter_application_seau/ui/pages/mypage/edit_page.dart';
 import 'package:flutter_application_seau/ui/pages/mypage/widgets/info_card.dart';
 import 'package:flutter_application_seau/ui/widgets/primary_button.dart';
@@ -7,8 +8,6 @@ import 'package:flutter_application_seau/ui/widgets/user_profile_image.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class MyPage extends StatelessWidget {
-  const MyPage({super.key});
-
   void _showToast(String message) {
     Fluttertoast.showToast(
       msg: message,
@@ -23,7 +22,6 @@ class MyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.grey[100],
         appBar: AppBar(
           title: Text(
             '나의 프로필',
@@ -32,6 +30,7 @@ class MyPage extends StatelessWidget {
           backgroundColor: Colors.white,
           elevation: 0, // 그림자 제거
         ),
+        backgroundColor: Colors.grey[100],
         body: Column(
           children: [
             // 상단: 프로필 섹션
@@ -74,6 +73,10 @@ class MyPage extends StatelessWidget {
                       ),
                       child: PrimaryButton(
                         text: '프로필 수정',
+                        textStyle: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: const Color(0xFF0770E9)),
                         onPressed: () async {
                           final result = await Navigator.push(
                             context,
