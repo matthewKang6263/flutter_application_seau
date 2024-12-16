@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_seau/ui/pages/address_search/address_search_page.dart';
+import 'package:flutter_application_seau/ui/pages/mypage/address_edit/address_edit_page.dart';
 import 'package:flutter_application_seau/ui/widgets/primary_button.dart';
 import 'package:flutter_application_seau/ui/widgets/user_profile_image.dart';
 
@@ -48,7 +49,7 @@ class EditPage extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AddressSearchPage()), // [가입-위치설정]페이지로 이동
+                  MaterialPageRoute(builder: (context) => AddressEditPage()), // [가입-위치설정]페이지로 이동
                 );
               },
               child: IgnorePointer( // 이벤트를 child가 가져가지 않도록 방지

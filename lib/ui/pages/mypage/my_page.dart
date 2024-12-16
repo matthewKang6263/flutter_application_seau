@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_seau/ui/pages/certification/certification_page.dart';
 import 'package:flutter_application_seau/ui/pages/home/_tab/my_tab/widgets/my_tab_app_bar.dart';
-import 'package:flutter_application_seau/ui/pages/mypage/edit_page.dart';
+import 'package:flutter_application_seau/ui/pages/mypage/certification_edit/certification_edit_page.dart';
+import 'package:flutter_application_seau/ui/pages/mypage/my_edit_page.dart';
 import 'package:flutter_application_seau/ui/pages/mypage/widgets/info_card.dart';
 import 'package:flutter_application_seau/ui/widgets/primary_button.dart';
 import 'package:flutter_application_seau/ui/widgets/user_profile_image.dart';
@@ -129,7 +130,7 @@ class MyPage extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => CertificationPage()),
+                  MaterialPageRoute(builder: (context) => CertificationEditPage()),
                 );
               },
             ),
