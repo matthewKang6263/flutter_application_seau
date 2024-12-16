@@ -52,4 +52,3 @@ class AddressRepository extends BaseRemoteRepository {
     }
   }
 }
-

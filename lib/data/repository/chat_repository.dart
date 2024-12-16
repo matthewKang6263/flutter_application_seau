@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_application_seau/data/model/user.dart';
+import 'package:flutter_application_seau/data/model/app_user.dart';
 
 class ChatRepository {
   // Firestore 인스턴스를 가져오기 (기본코드)
@@ -82,11 +82,11 @@ class ChatRepository {
   }
 
   // 05. 사용자 정보 가져오기
-  Future<User?> getUser(String uid) async {
+  Future<AppUser?> getUser(String uid) async {
     try {
       final doc = await firestore.collection('users').doc(uid).get();
       if (doc.exists) {
-        return User.fromFirestore(doc);
+        return AppUser.fromFirestore(doc);
       }
       return null;
     } catch (e) {

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_seau/data/model/user.dart';
 import 'package:flutter_application_seau/data/repository/chat_repository.dart';
 import 'package:flutter_application_seau/ui/pages/chat/chat_detail/chat_detail_page.dart';
 import 'package:flutter_application_seau/ui/pages/chat/chat_list_view_model.dart';
 import 'package:flutter_application_seau/ui/widgets/user_profile_image.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_application_seau/data/model/app_user.dart';
 
 class ChatListPage extends ConsumerWidget {
   @override
@@ -21,7 +21,7 @@ class ChatListPage extends ConsumerWidget {
               final chat = state.chats[index];
               final otherUserId = chat.participants[0];
 
-              return FutureBuilder<User?>(
+              return FutureBuilder<AppUser?>(
                 future: ChatRepository().getUser(otherUserId),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {

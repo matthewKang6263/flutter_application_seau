@@ -26,7 +26,6 @@ class AddressSearchPage extends ConsumerWidget {
       ),
       body: Column(
         children: [
-          // 프로그레스 바
           Stack(
             children: [
               Container(
@@ -57,10 +56,9 @@ class AddressSearchPage extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  // 위치 검색 텍스트 필드
                   TextField(
-                    controller: TextEditingController(
-                        text: state.currentAddress?.fullName),
+                    controller:
+                        TextEditingController(text: state.currentAddress),
                     onChanged: (value) => viewModel.searchLocation(value),
                     decoration: InputDecoration(
                       prefixIcon: const Icon(Icons.search, color: Colors.grey),
@@ -75,7 +73,6 @@ class AddressSearchPage extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  // 현재 위치로 찾기 버튼
                   ElevatedButton.icon(
                     onPressed: () => viewModel.getCurrentLocation(),
                     style: ElevatedButton.styleFrom(
@@ -95,7 +92,6 @@ class AddressSearchPage extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  // 검색 결과 리스트
                   Expanded(
                     child: state.isLoading
                         ? const Center(child: CircularProgressIndicator())
@@ -105,8 +101,7 @@ class AddressSearchPage extends ConsumerWidget {
                                 itemCount: state.searchResults.length,
                                 itemBuilder: (context, index) {
                                   return ListTile(
-                                    title: Text(
-                                        state.searchResults[index].fullName),
+                                    title: Text(state.searchResults[index]),
                                     onTap: () {
                                       viewModel.setCurrentAddress(
                                           state.searchResults[index]);
@@ -119,14 +114,13 @@ class AddressSearchPage extends ConsumerWidget {
               ),
             ),
           ),
-          // 다음 버튼
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 18),
             child: PrimaryButton(
               text: "다음",
               onPressed: state.currentAddress != null
                   ? () {
-                      joinViewModel.setLocation(state.currentAddress!.fullName);
+                      joinViewModel.setLocation(state.currentAddress!);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
