@@ -51,7 +51,7 @@ class ChatListViewModel extends AutoDisposeNotifier<ChatListState> {
     try {
       // 채팅방 목록 스트림 구독
       _chatSubscription =
-          _chatRepository.getChat(currentUserId).listen((querySnapshot) {
+          _chatRepository.getChats(currentUserId).listen((querySnapshot) {
         // 스냅샷에서 채팅방 목록 추출
         final chatRooms =
             querySnapshot.docs.map((doc) => Chat.fromFirestore(doc)).toList();
