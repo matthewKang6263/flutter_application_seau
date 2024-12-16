@@ -1,40 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_seau/data/model/user.dart';
+import 'package:flutter_application_seau/data/repository/chat_repository.dart';
 import 'package:flutter_application_seau/ui/pages/chat/chat_detail/chat_detail_page.dart';
+import 'package:flutter_application_seau/ui/pages/chat/chat_list_view_model.dart';
 import 'package:flutter_application_seau/ui/widgets/user_profile_image.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ChatListPage extends StatelessWidget {
+class ChatListPage extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(chatListViewModel);
     return Scaffold(
-      appBar: AppBar(
-        title: Text('채팅 목록'), // 앱 바에 표시될 제목
-      ),
-      body: ListView(
-        padding: EdgeInsets.all(16),
-        children: [
-          // ChatListItem을 여러 개 넣어서 채팅 목록을 만듭니다.
-          ChatListItem(
-            sender: '다이빙 러버',
-            message: '좋습니다! 시간과 장소 모두 괜찮아요.',
-            time: '오후 12:30',
-            imgUrl: "https://picsum.photos/200/300",
-          ),
-          ChatListItem(
-            sender: '버디버디',
-            message: '오후에 만나기로 했어요!',
-            time: '오후 1:00',
-            imgUrl: "",
-          ),
-          ChatListItem(
-            sender: '체코시당',
-            message: '조금 늦을 수 있어요.',
-            time: '오후 2:15',
-            imgUrl: null,
-          ),
-        ],
-      ),
-    );
+        appBar: AppBar(
+          title: Text('채팅 목록'), // 앱 바에 표시될 제목
+        ),
+        body: ListView.builder(
+            padding: EdgeInsets.all(16),
+            itemCount: state.chatRooms.length,
+            itemBuilder: (context, index) {
+              final chat = state.chatRooms[index];
+              final otherUserId = chat.participants[0];
+
+              return FutureBuilder<User?>(
+                future: ChatRepository().getUser(otherUserId),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return SizedBox();
+                  }
+
+                  final user = snapshot.data!;
+                  return ChatListItem(
+                    sender: user.nickname,
+                    message: chat.lastMessage,
+                    time: _formatTime(chat.lastMessageTime),
+                    imgUrl: "",
+                  );
+                },
+              );
+            }));
   }
+}
+
+String _formatTime(DateTime time) {
+  final hour = time.hour;
+  final minute = time.minute.toString().padLeft(2, '0');
+  final period = hour >= 12 ? '오후' : '오전';
+  final formattedHour = (hour > 12 ? hour - 12 : hour).toString();
+  return '$period $formattedHour:$minute';
 }
 
 class ChatListItem extends StatelessWidget {
