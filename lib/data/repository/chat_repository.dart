@@ -21,18 +21,18 @@ class ChatRepository {
   Stream<QuerySnapshot> getChatMessages(String chatId) {
     // messages 서브컬렉션의 문서들을 시간순으로 정렬해서 가져옵니다
     return firestore
-        .collection('chats')
+        .collection('chats') //파이어베이스와 이름 동일해야
         .doc(chatId)
         .collection('messages')
-        .orderBy('timestamp', descending: true)
+        .orderBy('timestamp', descending: true) //시간순
         .snapshots();
   }
 
-  // 03. 새로운 채팅방 만들기
+  // 03. 새로운 채팅방 만들기 >> 새로운 채팅방 ID를 만드는것 (아직 대화전)
   Future<String> createChat(List<String> participants) async {
     try {
       // 새 채팅방 문서를 생성합니다
-      final chatDoc = firestore.collection('chats').doc();
+      final chatDoc = firestore.collection('chats').doc(); //.doc()가 문서 만드는 함수
 
       // 채팅방 초기 데이터를 설정합니다
       await chatDoc.set({
@@ -51,6 +51,8 @@ class ChatRepository {
 
   // 04. 새로운 메시지를 전송하기
   Future<void> sendMessage({
+    //매개변수 정의는 이 페이지에서 직접 작성할 수 있는데 (chatId, uid, content)
+    //헷갈리지 않게 데이터 모델과 일치시키는것이 좋음
     required String chatId,
     required String uid,
     required String content,
