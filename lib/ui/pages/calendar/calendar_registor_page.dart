@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_seau/ui/pages/calendar/widgets/input_field.dart';
-import 'package:flutter_application_seau/ui/pages/calendar/widgets/select_field.dart';
+import 'package:flutter_application_seau/ui/widgets/input_field.dart';
+import 'package:flutter_application_seau/ui/widgets/select_field.dart';
+import 'package:flutter_application_seau/ui/pages/home/home_page.dart';
+import 'package:flutter_application_seau/ui/widgets/primary_button.dart';
 
-class CalendarWritePage extends StatelessWidget {
+class CalendarRegistorPage extends StatelessWidget {
   final DateTime selectedDate; // 선택된 날짜를 받아오는 변수 추가
 
-  CalendarWritePage({
+  CalendarRegistorPage({
     Key? key,
     required this.selectedDate,
   }) : super(key: key);
@@ -36,7 +38,19 @@ class CalendarWritePage extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text('일정 등록', style: TextStyle(fontSize: 16)),
+        title: Text(
+          '일정 등록',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        shape: Border(
+          bottom: BorderSide(
+            color: Color.fromRGBO(240, 240, 240, 1),
+            width: 1,
+          ),
+        ),
       ),
       body: SafeArea(
         child: Column(
@@ -78,12 +92,6 @@ class CalendarWritePage extends StatelessWidget {
                         suffixIcon: Icons.access_time,
                       ),
                       SizedBox(height: 16),
-                      // InputField(
-                      //   controller: locationController,
-                      //   label: '장소 선택',
-                      //   hintText: '예시) 서울 강남구',
-                      //   suffixIcon: Icons.location_on,
-                      // ),
                       SelectField(
                         label: "장소 선택",
                         controller: locationController,
@@ -96,7 +104,8 @@ class CalendarWritePage extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-              child: ElevatedButton(
+              child: PrimaryButton(
+                text: "등록하기",
                 onPressed: () {
                   String name = nameController.text;
                   String date = dateController.text;
@@ -112,7 +121,7 @@ class CalendarWritePage extends StatelessWidget {
                     'day': selectedDate.day.toString(),
                   });
                 },
-                child: Text('등록하기'),
+                backgroundColor: const Color(0xFF0770E9), // 기존 버튼 색상
               ),
             ),
           ],
