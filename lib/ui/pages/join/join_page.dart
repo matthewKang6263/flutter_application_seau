@@ -5,17 +5,17 @@ import 'package:flutter_application_seau/ui/widgets/nickname_text_form_field.dar
 import 'package:flutter_application_seau/ui/widgets/email_text_form_field.dart';
 import 'package:flutter_application_seau/ui/widgets/pw_text_form_field.dart';
 import 'package:flutter_application_seau/ui/pages/join/join_view_model.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class JoinPage extends StatelessWidget {
-  const JoinPage({Key? key}) : super(key: key);
+class JoinPage extends ConsumerWidget {
+  const JoinPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final nicknameController = TextEditingController(); // 닉네임 컨트롤러 생성
-    final emailController = TextEditingController(); // 이메일 컨트롤러 생성
-    final passwordController = TextEditingController(); // 비밀번호 컨트롤러 생성
-    final joinViewModel = JoinViewModel();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final nicknameController = TextEditingController();
+    final emailController = TextEditingController();
+    final passwordController = TextEditingController();
+    final joinViewModel = ref.watch(joinViewModelProvider.notifier);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -60,30 +60,22 @@ class JoinPage extends StatelessWidget {
                     text: "다음",
                     onPressed: () async {
                       try {
-                        // 회원가입 로직 실행
-                        await joinViewModel.signUp(
+                        // 회원가입 첫 단계 실행
+                        await joinViewModel.initiateSignUp(
                           emailController.text,
                           passwordController.text,
+                          nicknameController.text,
                         );
-                        // 회원가입 성공 시 주소 검색 페이지로 이동
+                        // 주소 검색 페이지로 이동
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => const AddressSearchPage()),
                         );
-                      } on FirebaseAuthException catch (e) {
-                        // 에러 메시지 설정
-                        String errorMessage;
-                        if (e.code == 'weak-password') {
-                          errorMessage = '비밀번호가 너무 약합니다.';
-                        } else if (e.code == 'email-already-in-use') {
-                          errorMessage = '이미 사용 중인 이메일입니다.';
-                        } else {
-                          errorMessage = '회원가입에 실패했습니다: ${e.message}';
-                        }
+                      } catch (e) {
                         // 에러 메시지 표시
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(errorMessage)),
+                          SnackBar(content: Text(e.toString())),
                         );
                       }
                     },

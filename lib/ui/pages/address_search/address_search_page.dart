@@ -3,14 +3,16 @@ import 'package:flutter_application_seau/ui/pages/certification/certification_pa
 import 'package:flutter_application_seau/ui/widgets/primary_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_application_seau/ui/pages/address_search/address_search_view_model.dart';
+import 'package:flutter_application_seau/ui/pages/join/join_view_model.dart';
 
 class AddressSearchPage extends ConsumerWidget {
-  const AddressSearchPage({Key? key}) : super(key: key);
+  const AddressSearchPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final viewModel = ref.watch(addressSearchViewModelProvider.notifier);
     final state = ref.watch(addressSearchViewModelProvider);
+    final joinViewModel = ref.watch(joinViewModelProvider.notifier);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -55,7 +57,11 @@ class AddressSearchPage extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
+                  // 위치 검색 텍스트 필드
                   TextField(
+                    controller: TextEditingController(
+                        text: state.currentAddress?.fullName),
+                    onChanged: (value) => viewModel.searchLocation(value),
                     decoration: InputDecoration(
                       prefixIcon: const Icon(Icons.search, color: Colors.grey),
                       hintText: "위치를 입력해주세요",
@@ -67,9 +73,9 @@ class AddressSearchPage extends ConsumerWidget {
                         borderSide: BorderSide.none,
                       ),
                     ),
-                    onChanged: (value) => viewModel.searchLocation(value),
                   ),
                   const SizedBox(height: 16),
+                  // 현재 위치로 찾기 버튼
                   ElevatedButton.icon(
                     onPressed: () => viewModel.getCurrentLocation(),
                     style: ElevatedButton.styleFrom(
@@ -89,36 +95,45 @@ class AddressSearchPage extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
+                  // 검색 결과 리스트
                   Expanded(
-                    child: ListView.builder(
-                      itemCount: state.searchResults.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          child: Text(
-                            state.searchResults[index],
-                            style: const TextStyle(fontSize: 16),
-                          ),
-                        );
-                      },
-                    ),
+                    child: state.isLoading
+                        ? const Center(child: CircularProgressIndicator())
+                        : state.error != null
+                            ? Center(child: Text(state.error!))
+                            : ListView.builder(
+                                itemCount: state.searchResults.length,
+                                itemBuilder: (context, index) {
+                                  return ListTile(
+                                    title: Text(
+                                        state.searchResults[index].fullName),
+                                    onTap: () {
+                                      viewModel.setCurrentAddress(
+                                          state.searchResults[index]);
+                                    },
+                                  );
+                                },
+                              ),
                   ),
                 ],
               ),
             ),
           ),
+          // 다음 버튼
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 18),
             child: PrimaryButton(
               text: "다음",
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const CertificationPage(),
-                  ),
-                );
-              },
+              onPressed: state.currentAddress != null
+                  ? () {
+                      joinViewModel.setLocation(state.currentAddress!.fullName);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const CertificationPage()),
+                      );
+                    }
+                  : null,
               backgroundColor: const Color(0xFF0770E9),
             ),
           ),
