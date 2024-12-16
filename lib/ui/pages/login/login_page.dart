@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_seau/ui/pages/home/home_page.dart';
 import 'package:flutter_application_seau/ui/widgets/primary_button.dart';
-import 'package:flutter_application_seau/ui/widgets/nickname_text_form_field.dart';
 import 'package:flutter_application_seau/ui/widgets/email_text_form_field.dart';
 import 'package:flutter_application_seau/ui/widgets/pw_text_form_field.dart';
+import 'package:flutter_application_seau/ui/pages/login/login_view_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final emailController = TextEditingController(); // 이메일 컨트롤러 생성
+    final passwordController = TextEditingController(); // 비밀번호 컨트롤러 생성
+    final loginViewModel = LoginViewModel();
+
     return Scaffold(
-      backgroundColor: Colors.white, // 전체 화면 흰색 배경
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white, // 앱바 흰색
-        elevation: 0, // 그림자 제거
+        backgroundColor: Colors.white,
+        elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.pop(context),
@@ -26,50 +31,52 @@ class LoginPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 20),
-            const Text(
-              "로그인 하세요",
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            const Text("로그인 하세요",
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
             const SizedBox(height: 40),
+            EmailTextFormField(controller: emailController),
             const SizedBox(height: 16),
-            // 이메일 입력 필드
-            const EmailTextFormField(),
-            const SizedBox(height: 16),
-            // 비밀번호 입력 필드
-            const PwTextFormField(),
-            const Spacer(), // 아래 여백 확보
-            // 완료 버튼
+            PwTextFormField(controller: passwordController),
+            const Spacer(),
             PrimaryButton(
               text: "완료",
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const HomePage(),
-                  ),
-                ); // 완료 버튼 동작 정의
+              onPressed: () async {
+                try {
+                  // 로그인 로직 실행
+                  await loginViewModel.signIn(
+                    emailController.text,
+                    passwordController.text,
+                  );
+                  // 로그인 성공 시 홈 페이지로 이동
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const HomePage()),
+                  );
+                } on FirebaseAuthException catch (e) {
+                  // 에러 메시지 설정
+                  String errorMessage;
+                  if (e.code == 'user-not-found') {
+                    errorMessage = '등록되지 않은 이메일입니다.';
+                  } else if (e.code == 'wrong-password') {
+                    errorMessage = '잘못된 비밀번호입니다.';
+                  } else {
+                    errorMessage = '로그인에 실패했습니다: ${e.message}';
+                  }
+                  // 에러 메시지 표시
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(errorMessage)),
+                  );
+                }
               },
-              backgroundColor: const Color(0xFF0770E9), // 기존 버튼 색상
+              backgroundColor: const Color(0xFF0770E9),
             ),
-            const SizedBox(height: 60), // 하단 여백
+            const SizedBox(height: 60),
           ],
         ),
       ),
     );
   }
 }
-
-
-
-
-
-
-
-
-
 
 
 

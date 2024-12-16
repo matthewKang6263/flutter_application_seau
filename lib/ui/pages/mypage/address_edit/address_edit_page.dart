@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_seau/ui/pages/certification/certification_page.dart';
 import 'package:flutter_application_seau/ui/widgets/primary_button.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_application_seau/ui/pages/address_search/address_search_view_model.dart';
 
-class AddressSearchPage extends ConsumerWidget {
-  const AddressSearchPage({Key? key}) : super(key: key);
+class AddressEditPage extends StatelessWidget {
+  const AddressEditPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final viewModel = ref.watch(addressSearchViewModelProvider.notifier);
-    final state = ref.watch(addressSearchViewModelProvider);
-
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -24,22 +19,6 @@ class AddressSearchPage extends ConsumerWidget {
       ),
       body: Column(
         children: [
-          // 프로그레스 바
-          Stack(
-            children: [
-              Container(
-                height: 4,
-                color: const Color(0xFFDDDDDD),
-              ),
-              FractionallySizedBox(
-                widthFactor: 0.66,
-                child: Container(
-                  height: 4,
-                  color: const Color(0xFF0770E9),
-                ),
-              ),
-            ],
-          ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 18),
@@ -55,6 +34,7 @@ class AddressSearchPage extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
+                  // 위치 입력 텍스트 필드
                   TextField(
                     decoration: InputDecoration(
                       prefixIcon: const Icon(Icons.search, color: Colors.grey),
@@ -67,14 +47,16 @@ class AddressSearchPage extends ConsumerWidget {
                         borderSide: BorderSide.none,
                       ),
                     ),
-                    onChanged: (value) => viewModel.searchLocation(value),
                   ),
                   const SizedBox(height: 16),
+                  // 현재 위치로 찾기 버튼
                   ElevatedButton.icon(
-                    onPressed: () => viewModel.getCurrentLocation(),
+                    onPressed: () {
+                      // 현재 위치로 찾기 동작 정의
+                    },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF14C2BF),
-                      minimumSize: const Size.fromHeight(48),
+                      backgroundColor: const Color(0xFF14C2BF), // 새로운 색상
+                      minimumSize: const Size.fromHeight(48), // 버튼 높이
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(6),
                       ),
@@ -84,19 +66,20 @@ class AddressSearchPage extends ConsumerWidget {
                       "현재 위치로 찾기",
                       style: TextStyle(
                         color: Colors.white,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.bold, // 볼드 처리
                       ),
                     ),
                   ),
                   const SizedBox(height: 20),
+                  // 검색 결과 리스트 (예시 데이터 제거)
                   Expanded(
                     child: ListView.builder(
-                      itemCount: state.searchResults.length,
+                      itemCount: 0, // 데이터가 없을 때
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8),
                           child: Text(
-                            state.searchResults[index],
+                            "검색 결과 데이터",
                             style: const TextStyle(fontSize: 16),
                           ),
                         );
@@ -107,22 +90,6 @@ class AddressSearchPage extends ConsumerWidget {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 18),
-            child: PrimaryButton(
-              text: "다음",
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const CertificationPage(),
-                  ),
-                );
-              },
-              backgroundColor: const Color(0xFF0770E9),
-            ),
-          ),
-          const SizedBox(height: 60),
         ],
       ),
     );
