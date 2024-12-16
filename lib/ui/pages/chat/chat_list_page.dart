@@ -16,9 +16,9 @@ class ChatListPage extends ConsumerWidget {
         ),
         body: ListView.builder(
             padding: EdgeInsets.all(16),
-            itemCount: state.chatRooms.length,
+            itemCount: state.chats.length,
             itemBuilder: (context, index) {
-              final chat = state.chatRooms[index];
+              final chat = state.chats[index];
               final otherUserId = chat.participants[0];
 
               return FutureBuilder<User?>(
