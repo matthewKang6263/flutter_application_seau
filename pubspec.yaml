@@ -31,7 +31,7 @@ dependencies:
   flutter:
     sdk: flutter
   geolocator: ^13.0.2
-  http: ^0.13.5
+  http: ^1.2.2
   fluttertoast: ^8.2.8
   firebase_auth: ^5.3.4
 

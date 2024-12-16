@@ -1,12 +1,12 @@
-import 'package:flutter_application_seau/data/repository/vworld_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_application_seau/core/geolocator_helper.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:flutter_application_seau/data/repository/vworld_repository.dart';
 
-// 주소 검색 상태를 관리하는 클래스
+// 주소 검색 상태 클래스
 class AddressSearchState {
-  final List<String> searchResults; // Address 대신 String으로 변경
-  final String? currentAddress; // Address 대신 String으로 변경
+  final List<String> searchResults;
+  final String? currentAddress;
   final bool isLoading;
   final String? error;
 
@@ -17,6 +17,7 @@ class AddressSearchState {
     this.error,
   });
 
+  // 상태 복사 메서드
   AddressSearchState copyWith({
     List<String>? searchResults,
     String? currentAddress,
@@ -27,17 +28,18 @@ class AddressSearchState {
       searchResults: searchResults ?? this.searchResults,
       currentAddress: currentAddress ?? this.currentAddress,
       isLoading: isLoading ?? this.isLoading,
-      error: error ?? this.error,
+      error: error, // error가 null이면 error 상태 초기화
     );
   }
 }
 
+// 주소 검색 뷰모델
 class AddressSearchViewModel extends StateNotifier<AddressSearchState> {
   AddressSearchViewModel(this._vWorldRepository) : super(AddressSearchState());
 
   final VWorldRepository _vWorldRepository;
 
-  // 주소 검색 메서드
+  // 주소 검색
   Future<void> searchLocation(String query) async {
     if (query.isEmpty) {
       state = state.copyWith(searchResults: [], isLoading: false, error: null);
@@ -45,9 +47,12 @@ class AddressSearchViewModel extends StateNotifier<AddressSearchState> {
     }
 
     state = state.copyWith(isLoading: true, error: null);
+
+    // 0.5초 딜레이 추가
+    await Future.delayed(Duration(milliseconds: 500));
+
     try {
-      final results =
-          await _vWorldRepository.findByName(query); // findByName 메서드 사용
+      final results = await _vWorldRepository.findByName(query);
       if (results.isEmpty) {
         state = state.copyWith(
           searchResults: [],
@@ -70,10 +75,11 @@ class AddressSearchViewModel extends StateNotifier<AddressSearchState> {
     }
   }
 
-  // 현재 위치 기반 주소 검색 메서드
+  // 현재 위치 기반 주소 검색
   Future<void> getCurrentLocation() async {
     state = state.copyWith(isLoading: true, error: null);
     try {
+      // 위치 서비스 활성화 확인
       bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
         state = state.copyWith(
@@ -83,10 +89,10 @@ class AddressSearchViewModel extends StateNotifier<AddressSearchState> {
         return;
       }
 
-      Position? position = await GeolocatorHelper.getPositon();
+      // 위치 정보 가져오기
+      Position? position = await GeolocatorHelper.getPosition();
       if (position != null) {
         final addresses = await _vWorldRepository.findByLatLng(
-          // findByLatLng 메서드 사용
           lat: position.latitude,
           lng: position.longitude,
         );
@@ -117,14 +123,13 @@ class AddressSearchViewModel extends StateNotifier<AddressSearchState> {
     }
   }
 
-  // 현재 주소 설정 메서드
+  // 현재 주소 설정
   void setCurrentAddress(String address) {
-    // String 타입으로 변경
     state = state.copyWith(currentAddress: address);
   }
 }
 
-// 프로바이더
+// 프로바이더 정의
 final addressSearchViewModelProvider =
     StateNotifierProvider<AddressSearchViewModel, AddressSearchState>((ref) {
   return AddressSearchViewModel(VWorldRepository());

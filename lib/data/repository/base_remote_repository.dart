@@ -45,4 +45,3 @@ class AuthInterceptor extends Interceptor {
     super.onResponse(response, handler);
   }
 }
-
