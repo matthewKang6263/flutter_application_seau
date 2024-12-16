@@ -40,18 +40,18 @@ class ChatListViewModel extends AutoDisposeNotifier<ChatListState> {
     // 초기 상태 설정
     return ChatListState(chatRooms: [], isLoading: true);
     // ViewModel이 생성될 때 채팅방 목록을 불러옵니다
-    _loadChatRooms();
+    _loadChats();
   }
 
   // 채팅방 목록을 불러오는 메서드
-  Future<void> _loadChatRooms() async {
+  Future<void> _loadChats() async {
     // 현재 사용자 ID (임시로 하드코딩, 나중에 인증 시스템과 연동 필요)
     const currentUserId = "현재_사용자_ID";
 
     try {
       // 채팅방 목록 스트림 구독
       _chatSubscription =
-          _chatRepository.getChatRooms(currentUserId).listen((querySnapshot) {
+          _chatRepository.getChat(currentUserId).listen((querySnapshot) {
         // 스냅샷에서 채팅방 목록 추출
         final chatRooms =
             querySnapshot.docs.map((doc) => Chat.fromFirestore(doc)).toList();
