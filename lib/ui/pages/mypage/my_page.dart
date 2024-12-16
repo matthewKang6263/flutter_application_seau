@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_seau/ui/pages/certification/certification_page.dart';
-import 'package:flutter_application_seau/ui/pages/mypage/edit_page.dart';
+import 'package:flutter_application_seau/ui/pages/home/_tab/my_tab/widgets/my_tab_app_bar.dart';
+import 'package:flutter_application_seau/ui/pages/mypage/certification_edit/certification_edit_page.dart';
+import 'package:flutter_application_seau/ui/pages/mypage/my_edit_page.dart';
 import 'package:flutter_application_seau/ui/pages/mypage/widgets/info_card.dart';
 import 'package:flutter_application_seau/ui/widgets/primary_button.dart';
 import 'package:flutter_application_seau/ui/widgets/user_profile_image.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class MyPage extends StatelessWidget {
-  const MyPage({super.key});
-
   void _showToast(String message) {
     Fluttertoast.showToast(
       msg: message,
@@ -23,7 +23,6 @@ class MyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.grey[100],
         appBar: AppBar(
           title: Text(
             '나의 프로필',
@@ -32,6 +31,7 @@ class MyPage extends StatelessWidget {
           backgroundColor: Colors.white,
           elevation: 0, // 그림자 제거
         ),
+        backgroundColor: Colors.grey[100],
         body: Column(
           children: [
             // 상단: 프로필 섹션
@@ -68,27 +68,25 @@ class MyPage extends StatelessWidget {
                   // 프로필 수정 버튼
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 30),
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey, width: 1.5),
-                      ),
-                      child: PrimaryButton(
-                        text: '프로필 수정',
-                        onPressed: () async {
-                          final result = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    EditPage() // 버튼 클릭 시 페이지 이동
-                                ),
-                          );
-                          if (result == true) {
-                            _showToast(
-                                '수정이 완료되었습니다.'); // 반환 값이 true면 토스트 메시지 표시
-                          }
-                        },
-                        backgroundColor: Colors.white,
-                      ),
+                    child: PrimaryButton(
+                      text: '프로필 수정',
+                      textStyle: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: const Color(0xFF0770E9)),
+                      backgroundColor: Colors.white,
+                      borderColor: Colors.grey,
+                      onPressed: () async {
+                        final result = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => EditPage() // 버튼 클릭 시 페이지 이동
+                              ),
+                        );
+                        if (result == true) {
+                          _showToast('수정이 완료되었습니다.'); // 반환 값이 true면 토스트 메시지 표시
+                        }
+                      },
                     ),
                   ),
                 ],
@@ -132,7 +130,7 @@ class MyPage extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => CertificationPage()),
+                  MaterialPageRoute(builder: (context) => CertificationEditPage()),
                 );
               },
             ),
