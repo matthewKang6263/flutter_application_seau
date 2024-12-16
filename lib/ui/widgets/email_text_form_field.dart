@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class EmailTextFormField extends StatelessWidget {
-  const EmailTextFormField({super.key});
+  final TextEditingController controller; // 컨트롤러 추가
+
+  const EmailTextFormField({Key? key, required this.controller})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +20,9 @@ class EmailTextFormField extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 8), // 제목과 필드 간 간격
-        const TextField(
-          decoration: InputDecoration(
+        TextField(
+          controller: controller, // 컨트롤러 연결
+          decoration: const InputDecoration(
             filled: true,
             fillColor: Color(0xFFF6F6F6), // 필드 배경색
             contentPadding: EdgeInsets.symmetric(

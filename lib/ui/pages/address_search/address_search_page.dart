@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_seau/ui/pages/certification/certification_page.dart';
 import 'package:flutter_application_seau/ui/widgets/primary_button.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_application_seau/ui/pages/address_search/address_search_view_model.dart';
 
-class AddressSearchPage extends StatelessWidget {
-  const AddressSearchPage({super.key});
+class AddressSearchPage extends ConsumerWidget {
+  const AddressSearchPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final viewModel = ref.watch(addressSearchViewModelProvider.notifier);
+    final state = ref.watch(addressSearchViewModelProvider);
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -22,14 +27,12 @@ class AddressSearchPage extends StatelessWidget {
           // 프로그레스 바
           Stack(
             children: [
-              // 전체 회색 바
               Container(
                 height: 4,
                 color: const Color(0xFFDDDDDD),
               ),
-              // 진행 중인 파란색 바
               FractionallySizedBox(
-                widthFactor: 0.66, // 현재 2/3 단계
+                widthFactor: 0.66,
                 child: Container(
                   height: 4,
                   color: const Color(0xFF0770E9),
@@ -52,7 +55,6 @@ class AddressSearchPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  // 위치 입력 텍스트 필드
                   TextField(
                     decoration: InputDecoration(
                       prefixIcon: const Icon(Icons.search, color: Colors.grey),
@@ -65,16 +67,14 @@ class AddressSearchPage extends StatelessWidget {
                         borderSide: BorderSide.none,
                       ),
                     ),
+                    onChanged: (value) => viewModel.searchLocation(value),
                   ),
                   const SizedBox(height: 16),
-                  // 현재 위치로 찾기 버튼
                   ElevatedButton.icon(
-                    onPressed: () {
-                      // 현재 위치로 찾기 동작 정의
-                    },
+                    onPressed: () => viewModel.getCurrentLocation(),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF14C2BF), // 새로운 색상
-                      minimumSize: const Size.fromHeight(48), // 버튼 높이
+                      backgroundColor: const Color(0xFF14C2BF),
+                      minimumSize: const Size.fromHeight(48),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(6),
                       ),
@@ -84,20 +84,19 @@ class AddressSearchPage extends StatelessWidget {
                       "현재 위치로 찾기",
                       style: TextStyle(
                         color: Colors.white,
-                        fontWeight: FontWeight.bold, // 볼드 처리
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
                   const SizedBox(height: 20),
-                  // 검색 결과 리스트 (예시 데이터 제거)
                   Expanded(
                     child: ListView.builder(
-                      itemCount: 0, // 데이터가 없을 때
+                      itemCount: state.searchResults.length,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8),
                           child: Text(
-                            "검색 결과 데이터",
+                            state.searchResults[index],
                             style: const TextStyle(fontSize: 16),
                           ),
                         );
@@ -108,7 +107,6 @@ class AddressSearchPage extends StatelessWidget {
               ),
             ),
           ),
-          // 다음 버튼
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 18),
             child: PrimaryButton(
@@ -119,12 +117,12 @@ class AddressSearchPage extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (context) => const CertificationPage(),
                   ),
-                ); // 다음 버튼 동작 정의
+                );
               },
               backgroundColor: const Color(0xFF0770E9),
             ),
           ),
-          const SizedBox(height: 60), // 다음 버튼 아래 여백
+          const SizedBox(height: 60),
         ],
       ),
     );
