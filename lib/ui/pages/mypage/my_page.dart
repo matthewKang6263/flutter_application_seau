@@ -67,31 +67,25 @@ class MyPage extends StatelessWidget {
                   // 프로필 수정 버튼
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 30),
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey, width: 1.5),
-                      ),
-                      child: PrimaryButton(
-                        text: '프로필 수정',
-                        textStyle: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: const Color(0xFF0770E9)),
-                        onPressed: () async {
-                          final result = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    EditPage() // 버튼 클릭 시 페이지 이동
-                                ),
-                          );
-                          if (result == true) {
-                            _showToast(
-                                '수정이 완료되었습니다.'); // 반환 값이 true면 토스트 메시지 표시
-                          }
-                        },
-                        backgroundColor: Colors.white,
-                      ),
+                    child: PrimaryButton(
+                      text: '프로필 수정',
+                      textStyle: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: const Color(0xFF0770E9)),
+                      backgroundColor: Colors.white,
+                      borderColor: Colors.grey,
+                      onPressed: () async {
+                        final result = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => EditPage() // 버튼 클릭 시 페이지 이동
+                              ),
+                        );
+                        if (result == true) {
+                          _showToast('수정이 완료되었습니다.'); // 반환 값이 true면 토스트 메시지 표시
+                        }
+                      },
                     ),
                   ),
                 ],
