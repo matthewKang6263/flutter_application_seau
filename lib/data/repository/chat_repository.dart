@@ -6,7 +6,7 @@ class ChatRepository {
   final firestore = FirebaseFirestore.instance;
 
   // 특정 사용자의 모든 채팅방 목록을 실시간으로 가져오는 스트림
-  Stream<QuerySnapshot> getChatRooms(String uid) {
+  Stream<QuerySnapshot> getChat(String uid) {
     // chats 컬렉션에서 현재 사용자가 participants 배열에 포함된 문서들을 찾습니다
     return firestore
         .collection('chats')
@@ -15,7 +15,7 @@ class ChatRepository {
   }
 
   // 특정 채팅방의 모든 메시지를 실시간으로 가져오는 스트림
-  Stream<QuerySnapshot> getMessages(String chatId) {
+  Stream<QuerySnapshot> getChatMessages(String chatId) {
     // messages 서브컬렉션의 문서들을 시간순으로 정렬해서 가져옵니다
     return firestore
         .collection('chats')
@@ -26,7 +26,7 @@ class ChatRepository {
   }
 
   // 새로운 채팅방을 생성하는 함수
-  Future<String> createChatRoom(List<String> participants) async {
+  Future<String> createChat(List<String> participants) async {
     try {
       // 새 채팅방 문서를 생성합니다
       final chatDoc = firestore.collection('chats').doc();
