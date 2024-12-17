@@ -1,33 +1,35 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_application_seau/data/repository/user_repository.dart';
+import 'package:flutter_application_seau/data/model/app_user.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+// 인증 서비스 클래스
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final UserRepository _userRepository = UserRepository();
 
-  // 이메일/비밀번호로 회원가입
-  Future<UserCredential?> signUp(String email, String password) async {
-    try {
-      UserCredential userCredential =
-          await _auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      return userCredential;
-    } on FirebaseAuthException catch (e) {
-      print('회원가입 오류: ${e.message}');
-      return null;
+  // 현재 로그인된 유저 정보 가져오기
+  Future<AppUser?> getCurrentUser() async {
+    final user = _auth.currentUser;
+    if (user != null) {
+      return await _userRepository.getUser(user.uid);
     }
+    return null;
   }
 
-  // 이메일/비밀번호로 로그인
-  Future<UserCredential?> signIn(String email, String password) async {
+  // 이메일로 로그인
+  Future<AppUser?> signIn(String email, String password) async {
     try {
-      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+      final userCredential = await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
-      return userCredential;
-    } on FirebaseAuthException catch (e) {
-      print('로그인 오류: ${e.message}');
+      if (userCredential.user != null) {
+        return await _userRepository.getUser(userCredential.user!.uid);
+      }
+      return null;
+    } catch (e) {
+      print('로그인 오류: $e');
       return null;
     }
   }
@@ -36,9 +38,8 @@ class AuthService {
   Future<void> signOut() async {
     await _auth.signOut();
   }
-
-  // 현재 사용자 가져오기
-  User? getCurrentUser() {
-    return _auth.currentUser;
-  }
 }
+
+final authServiceProvider = Provider<AuthService>((ref) {
+  return AuthService();
+});

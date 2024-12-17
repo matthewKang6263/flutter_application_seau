@@ -1,57 +1,37 @@
-import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_application_seau/data/model/app_user.dart';
-import 'package:flutter_application_seau/data/repository/user_repository.dart';
+import 'package:flutter_application_seau/core/auth_service.dart';
 
+// LoginViewModel 정의
 class LoginViewModel extends StateNotifier<AppUser?> {
-  LoginViewModel(this._userRepository) : super(null);
+  LoginViewModel(this._authService) : super(null);
 
-  final UserRepository _userRepository;
-  final auth.FirebaseAuth _auth = auth.FirebaseAuth.instance;
+  final AuthService _authService;
 
-  // 로그인 메서드
-  Future<void> login(String email, String password) async {
+  // 로그인
+  Future<bool> login(String email, String password) async {
     try {
-      final userCredential = await _auth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-
-      if (userCredential.user != null) {
-        final user = await _userRepository.getUser(userCredential.user!.uid);
-        if (user != null) {
-          state = user;
-        } else {
-          throw Exception('사용자 정보를 찾을 수 없습니다.');
-        }
-      }
-    } on auth.FirebaseAuthException catch (e) {
-      throw Exception(e.message);
-    }
-  }
-
-  // 로그아웃 메서드
-  Future<void> logout() async {
-    await _auth.signOut();
-    state = null;
-  }
-
-  // 현재 로그인된 사용자 정보 가져오기
-  Future<void> getCurrentUser() async {
-    final currentUser = _auth.currentUser;
-    if (currentUser != null) {
-      final user = await _userRepository.getUser(currentUser.uid);
+      final user = await _authService.signIn(email, password);
       if (user != null) {
         state = user;
+        return true;
       }
+      return false;
+    } catch (e) {
+      print('로그인 실패: $e');
+      return false;
     }
+  }
+
+  // 로그아웃
+  Future<void> logout() async {
+    await _authService.signOut();
+    state = null;
   }
 }
 
+// Provider 정의
 final loginViewModelProvider =
     StateNotifierProvider<LoginViewModel, AppUser?>((ref) {
-  return LoginViewModel(ref.watch(userRepositoryProvider));
+  return LoginViewModel(ref.read(authServiceProvider));
 });
-
-final userRepositoryProvider =
-    Provider<UserRepository>((ref) => UserRepository());

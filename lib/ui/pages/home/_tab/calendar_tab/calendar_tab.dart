@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_seau/data/model/calendar.dart';
 import 'package:flutter_application_seau/data/repository/calendar_repository.dart';
-import 'package:flutter_application_seau/ui/pages/calendar/calendar_registor_page.dart';
 import 'package:flutter_application_seau/ui/pages/home/_tab/calendar_tab/widgets/calendar_tab_app_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'widgets/calendar_view.dart';
@@ -60,7 +59,14 @@ class _CalendarTabState extends State<CalendarTab> {
                       ),
                       eventsAsyncValue.when(
                         data: (events) => CalendarList(
-                            savedItems: events.map((e) => e.toMap()).toList()),
+                          savedItems: events.map((e) => e.toMap()).toList(),
+                          onDelete: (String id) {
+                            // 여기에서 실제 삭제 로직을 구현합니다.
+                            ref
+                                .read(calendarRepositoryProvider)
+                                .deleteEvent(id);
+                          },
+                        ),
                         loading: () => CircularProgressIndicator(),
                         error: (_, __) => Text('Error loading events'),
                       ),

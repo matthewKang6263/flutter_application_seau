@@ -52,5 +52,3 @@ class ValidatorUtil {
     return null;
   }
 }
-
-

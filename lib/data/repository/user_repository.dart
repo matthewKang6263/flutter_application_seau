@@ -22,10 +22,16 @@ class UserRepository {
   Future<AppUser?> getUser(String userId) async {
     final doc = await _firestore.collection('users').doc(userId).get();
     if (doc.exists) {
-      // fromFirestore 메서드를 사용하여 AppUser 객체 생성
       return AppUser.fromFirestore(doc);
     }
     return null;
+  }
+
+// 프로필 이미지 업데이트
+  Future<void> updateProfileImage(String userId, String imageUrl) async {
+    await _firestore.collection('users').doc(userId).update({
+      'profileImageUrl': imageUrl,
+    });
   }
 
   // 사용자 정보 업데이트
@@ -54,13 +60,10 @@ class UserRepository {
       // Firebase Storage에 이미지 업로드
       final storageRef = _storage.ref().child('profile_images/$userId/${image.name}');
       await storageRef.putFile(File(image.path));
-
       // 업로드된 이미지의 다운로드 URL 가져오기
       final downloadUrl = await storageRef.getDownloadURL();
-
       // Firestore에 프로필 이미지 URL 업데이트
       await updateUser(userId, {'profileImageUrl': downloadUrl});
-
       return downloadUrl;
     } catch (e) {
       throw Exception('프로필 이미지 업로드 중 오류가 발생했습니다: $e');
@@ -77,6 +80,62 @@ class UserRepository {
       return userCredential.user?.uid;
     } on auth.FirebaseAuthException catch (e) {
       throw Exception(e.message);
+    }
+  }
+
+  // 로그인
+  Future<String?> signIn(String email, String password) async {
+    try {
+      final userCredential = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      return userCredential.user?.uid;
+    } on auth.FirebaseAuthException catch (e) {
+      throw Exception(e.message);
+    }
+  }
+
+  // 로그아웃
+  Future<void> signOut() async {
+    await _auth.signOut();
+  }
+
+  // 동일한 자격증 종류와 레벨을 가진 사용자들 가져오기
+  Future<List<AppUser>> getUsersWithSameCertification(
+      String certificationType, String certificationLevel) async {
+    try {
+      final querySnapshot = await _firestore
+          .collection('users')
+          .where('certificationType', isEqualTo: certificationType)
+          .where('certificationLevel', isEqualTo: certificationLevel)
+          .get();
+
+      return querySnapshot.docs
+          .map((doc) => AppUser.fromFirestore(doc))
+          .toList();
+    } catch (e) {
+      print('동일한 자격을 가진 사용자들을 가져오는 중 오류 발생: $e');
+      return [];
+    }
+  }
+
+  // 현재 사용자의 자격증 정보 가져오기
+  Future<Map<String, String>?> getCurrentUserCertification() async {
+    try {
+      final userId = getCurrentUserId();
+      final userDoc = await _firestore.collection('users').doc(userId).get();
+      if (userDoc.exists) {
+        final data = userDoc.data() as Map<String, dynamic>;
+        return {
+          'certificationType': data['certificationType'] as String,
+          'certificationLevel': data['certificationLevel'] as String,
+        };
+      }
+      return null;
+    } catch (e) {
+      print('현재 사용자의 자격증 정보를 가져오는 중 오류 발생: $e');
+      return null;
     }
   }
 }
