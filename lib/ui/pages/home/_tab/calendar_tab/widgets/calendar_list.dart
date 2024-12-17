@@ -35,11 +35,8 @@ class CalendarList extends StatelessWidget {
                 return Dismissible(
                   key: Key(item['id'] ?? ''),
                   direction: DismissDirection.endToStart,
-                  onDismissed: (direction) {
-                    onDelete(item['id'] ?? '');
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('일정이 삭제되었습니다')),
-                    );
+                  dismissThresholds: const {
+                    DismissDirection.endToStart: 0.5, // 20%만 스와이프하면 동작하도록 설정
                   },
                   background: Container(
                     color: Colors.red,
@@ -51,6 +48,39 @@ class CalendarList extends StatelessWidget {
                       ),
                     ),
                   ),
+                  confirmDismiss: (direction) async {
+                    return await showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('일정 삭제'),
+                          content: Text('이 일정을 삭제하시겠습니까?'),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(false),
+                              child: Text(
+                                '취소',
+                                style: TextStyle(color: Colors.blue),
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(true),
+                              child: Text(
+                                '삭제',
+                                style: TextStyle(color: Colors.blue),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  onDismissed: (direction) {
+                    onDelete(item['id'] ?? '');
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('일정이 삭제되었습니다')),
+                    );
+                  },
                   child: Card(
                     margin: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                     shape: RoundedRectangleBorder(
