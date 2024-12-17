@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_seau/ui/pages/mypage/address_edit/address_edit_page.dart';
 import 'package:flutter_application_seau/ui/pages/mypage/profile_edit/profile_edit_view_model.dart';
 import 'package:flutter_application_seau/ui/widgets/primary_button.dart';
-import 'package:flutter_application_seau/ui/widgets/user_profile_image.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProfileEditPage extends ConsumerStatefulWidget {
@@ -82,13 +81,52 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
             const SizedBox(height: 20),
             // 1. 프로필 이미지
             Center(
-              child: CircleAvatar(
-                radius: 60,
-                backgroundImage: user.profileImageUrl != null &&
-                        user.profileImageUrl!.isNotEmpty
-                    ? NetworkImage(user.profileImageUrl!)
-                    : AssetImage('assets/images/default_profile_image.png')
-                        as ImageProvider,
+              child: GestureDetector(
+                onTap: () async {
+                  await profileEditViewModel.pickProfileImage();
+                },
+                child: Stack(
+                  alignment: Alignment.bottomRight,
+                  children: [
+                    CircleAvatar(
+                      radius: 60,
+                      backgroundImage: user.profileImageUrl != null &&
+                              user.profileImageUrl!.isNotEmpty
+                          ? NetworkImage(user.profileImageUrl!)
+                          : const AssetImage(
+                                  'assets/images/default_profile_image.png')
+                              as ImageProvider,
+                    ),
+                    // 이미지 수정 아이콘
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: Colors.grey,
+                            width: 0.5,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 3, 
+                              offset: Offset(0, 3), 
+                            ),
+                          ],
+                        ),
+                        child: const Icon(
+                          Icons.edit,
+                          color: Colors.grey,
+                          size: 18,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
             const SizedBox(height: 40),

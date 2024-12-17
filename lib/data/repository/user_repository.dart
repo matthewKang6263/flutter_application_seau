@@ -1,5 +1,4 @@
 import 'dart:io'; 
-import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:firebase_storage/firebase_storage.dart';
@@ -54,17 +53,12 @@ class UserRepository {
     }
   }
 
-// 프로필 이미지 업로드 및 URL 업데이트
-  Future<String?> uploadProfileImage(String userId, XFile image) async {
+  // 프로필 이미지 업로드
+  Future<String?> uploadProfileImage(String userId, File imageFile) async {
     try {
-      // Firebase Storage에 이미지 업로드
-      final storageRef = _storage.ref().child('profile_images/$userId/${image.name}');
-      await storageRef.putFile(File(image.path));
-      // 업로드된 이미지의 다운로드 URL 가져오기
-      final downloadUrl = await storageRef.getDownloadURL();
-      // Firestore에 프로필 이미지 URL 업데이트
-      await updateUser(userId, {'profileImageUrl': downloadUrl});
-      return downloadUrl;
+      final ref = _storage.ref().child('profile_images/$userId');
+      await ref.putFile(imageFile);
+      return await ref.getDownloadURL();
     } catch (e) {
       throw Exception('프로필 이미지 업로드 중 오류가 발생했습니다: $e');
     }
