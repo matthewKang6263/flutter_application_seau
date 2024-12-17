@@ -1,9 +1,12 @@
 // chat_detail_input.dart
 
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ChatDetailInput extends StatefulWidget {
-  const ChatDetailInput({Key? key}) : super(key: key);
+  const ChatDetailInput({Key? key, required this.chatId}) : super(key: key);
+  final String chatId;
 
   @override
   State<ChatDetailInput> createState() => _ChatDetailInputState();
@@ -21,14 +24,34 @@ class _ChatDetailInputState extends State<ChatDetailInput> {
   }
 
   // 메시지 전송 처리 함수
-  void _handleSend() {
+  void _handleSend() async {
     final message = _controller.text.trim();
     if (message.isEmpty) return; // 빈 메시지는 전송하지 않음
 
-    // TODO: 여기에 전송 로직 구현
-    print('메시지 전송: $message');
+    try {
+      final currentUserId = FirebaseAuth.instance.currentUser?.uid;
+      if (currentUserId == null) {
+        print("사용자가 로그인하지 않았습니다."); // 에러 로그 출력
+        return;
+      }
+      // Firestore에 메시지 저장
+      await FirebaseFirestore.instance
+          .collection('chats') // chats 컬렉션
+          .doc(widget.chatId) // 특정 채팅방 문서
+          .collection('messages') // messages 서브컬렉션
+          .add({
+        'senderId': currentUserId,
+        'content': message, // 메시지 내용
+        'timestamp': FieldValue.serverTimestamp(), // 서버 타임스탬프
+      });
 
-    _controller.clear(); // 입력창 비우기
+      _controller.clear(); // 입력 필드 비우기
+    } catch (e) {
+      print('메시지 전송 중 오류: $e'); // 에러 처리
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('메시지 전송 중 오류가 발생했습니다.')),
+      );
+    }
   }
 
   @override

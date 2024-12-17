@@ -16,39 +16,53 @@ class ChatListPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('채팅 목록'),
+        title: Text(
+          '채팅 목록',
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: Colors.white,
+        shape: const Border(
+          bottom: BorderSide(
+            color: Color.fromRGBO(240, 240, 240, 1),
+            width: 1,
+          ),
+        ),
       ),
-      body: ListView.builder(
-        padding: EdgeInsets.all(16),
-        itemCount: state.chats.length,
-        itemBuilder: (context, index) {
-          final chat = state.chats[index];
+      body: Container(
+        color: Colors.white,
+        child: ListView.builder(
+          padding: EdgeInsets.all(16),
+          itemCount: state.chats.length,
+          itemBuilder: (context, index) {
+            final chat = state.chats[index];
 
-          // participants에서 현재 사용자 제외 (수정된 부분!!!!!!!!!!!!!)
-          final otherUserId = chat.participants
-              .firstWhere((id) => id != currentUser?.uid, orElse: () => '');
+            // participants에서 현재 사용자 제외 (수정된 부분!!!!!!!!!!!!!)
+            final otherUserId = chat.participants
+                .firstWhere((id) => id != currentUser?.uid, orElse: () => '');
 
-          if (otherUserId.isEmpty)
-            return SizedBox(); // 상대방 ID가 없으면 빈 위젯 반환 (수정된 부분!!!!!!!!!!!!!)
+            if (otherUserId.isEmpty)
+              return SizedBox(); // 상대방 ID가 없으면 빈 위젯 반환 (수정된 부분!!!!!!!!!!!!!)
 
-          return FutureBuilder<AppUser?>(
-            future: ChatRepository().getUser(otherUserId),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return SizedBox(); // 데이터가 없으면 빈 위젯 반환
-              }
+            return FutureBuilder<AppUser?>(
+              future: ChatRepository().getUser(otherUserId),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return SizedBox(); // 데이터가 없으면 빈 위젯 반환
+                }
 
-              final user = snapshot.data!;
-              return ChatListItem(
-                sender: user.nickname,
-                message: chat.lastMessage,
-                time: _formatTime(chat.lastMessageTime),
-                imgUrl: user
-                    .profileImageUrl, // 상대방 이미지 URL 추가 (수정된 부분!!!!!!!!!!!!!)
-              );
-            },
-          );
-        },
+                final user = snapshot.data!;
+                return ChatListItem(
+                  sender: user.nickname,
+                  message: chat.lastMessage,
+                  time: _formatTime(chat.lastMessageTime),
+                  chatId: chat.chatId,
+                  imgUrl: user
+                      .profileImageUrl, // 상대방 이미지 URL 추가 (수정된 부분!!!!!!!!!!!!!)
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }
@@ -67,12 +81,14 @@ class ChatListItem extends StatelessWidget {
   final String message;
   final String time;
   final String? imgUrl;
+  final String chatId;
 
   ChatListItem({
     required this.sender,
     required this.message,
     required this.time,
     this.imgUrl,
+    required this.chatId,
   });
 
   @override
@@ -86,6 +102,7 @@ class ChatListItem extends StatelessWidget {
             MaterialPageRoute(
               builder: (context) => ChatDetailPage(
                 userName: sender,
+                chatId: chatId,
                 userImg: imgUrl, // 상대방 이미지 URL 전달 (수정된 부분!!!!!!!!!!!!!)
               ),
             ),

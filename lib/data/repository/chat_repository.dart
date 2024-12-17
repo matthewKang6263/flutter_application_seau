@@ -5,7 +5,7 @@ class ChatRepository {
   // Firestore 인스턴스를 가져오기
   final firestore = FirebaseFirestore.instance;
 
-  // 01_채팅방 목록 가져오기
+  // 01_채팅방 목록 가져오기 (수정된 부분!!!!!!!!!!!!!)
   Stream<QuerySnapshot> getChats(String id) {
     return FirebaseFirestore.instance
         .collection('chats')
@@ -14,7 +14,7 @@ class ChatRepository {
         .snapshots();
   }
 
-  // 02_채팅방의 모든 메시지 가져오기
+  // 02_채팅방의 모든 메시지 가져오기 (수정된 부분!!!!!!!!!!!!!)
   Stream<QuerySnapshot> getChatMessages(String chatId) {
     return firestore
         .collection('chats')
@@ -25,6 +25,7 @@ class ChatRepository {
   }
 
   // 03. 새로운 채팅방 만들기 >> 새로운 채팅방 ID를 만드는것 (아직 대화전)
+  // (수정된 부분!!!!!!!!!!!!!)
   Future<String> createChat(List<String> participants) async {
     try {
       // 기존 채팅방이 있는지 확인
@@ -55,10 +56,8 @@ class ChatRepository {
     }
   }
 
-  // 04. 새로운 메시지를 전송하기
+  // 04. 새로운 메시지를 전송하기 (수정된 부분!!!!!!!!!!!!!)
   Future<void> sendMessage({
-    //매개변수 정의는 이 페이지에서 직접 작성할 수 있는데 (chatId, uid, content)
-    //헷갈리지 않게 데이터 모델과 일치시키는것이 좋음
     required String chatId,
     required String id,
     required String content,
@@ -69,23 +68,31 @@ class ChatRepository {
         print('빈 메시지는 전송되지 않습니다.');
         return;
       }
-      // 채팅방의 messages 서브컬렉션에 새 메시지를 추가합니다
-      await firestore
-          .collection('chats')
-          .doc(chatId)
-          .collection('messages')
-          .add({
-        'senderId': id,
-        'content': content,
-        'timestamp': DateTime.now(),
-        'isRead': false,
+
+      // Firebase 트랜잭션 시작 - 두 작업이 모두 성공하거나 모두 실패하도록 함
+      await firestore.runTransaction((transaction) async {
+        // 1. messages 서브컬렉션에 새 메시지 추가
+        final messageRef = firestore
+            .collection('chats')
+            .doc(chatId)
+            .collection('messages')
+            .doc();
+
+        transaction.set(messageRef, {
+          'senderId': id,
+          'content': content,
+          'timestamp': FieldValue.serverTimestamp(),
+          'isRead': false,
+        });
+
+        // 2. 채팅방의 마지막 메시지 정보 업데이트
+        final chatRef = firestore.collection('chats').doc(chatId);
+        transaction.update(chatRef, {
+          'lastMessage': content,
+          'lastMessageTime': FieldValue.serverTimestamp(),
+        });
       });
 
-      // 채팅방의 마지막 메시지 정보를 업데이트합니다
-      await firestore.collection('chats').doc(chatId).update({
-        'lastMessage': content,
-        'lastMessageTime': DateTime.now(),
-      });
       print('메시지 전송 성공: $content');
     } catch (e) {
       print('메시지 전송 중 에러 발생: $e');
@@ -107,9 +114,7 @@ class ChatRepository {
     }
   }
 
-  // ChatRepository 클래스에 추가할 메서드
-
-// 채팅방 찾거나 생성하기
+  // 채팅방 찾거나 생성하기
   Future<String> createOrGetChatRoom(
       String currentUserId, String otherUserId) async {
     try {
@@ -127,7 +132,7 @@ class ChatRepository {
     }
   }
 
-// 기존 채팅방 찾기
+// 기존 채팅방 찾기 메서드
   Future<String?> _findExistingChat(
       String currentUserId, String otherUserId) async {
     try {
