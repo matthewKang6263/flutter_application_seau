@@ -32,7 +32,8 @@ class _AddressSearchPageState extends ConsumerState<AddressEditPage> {
   Widget build(BuildContext context) {
     final viewModel = ref.watch(addressSearchViewModelProvider.notifier);
     final state = ref.watch(addressSearchViewModelProvider);
-    final profileEditViewModel = ref.watch(profileEditViewModelProvider.notifier);
+    final profileEditViewModel =
+        ref.watch(profileEditViewModelProvider.notifier);
 
     if (state.currentAddress != null &&
         state.currentAddress != _searchController.text) {
@@ -121,8 +122,10 @@ class _AddressSearchPageState extends ConsumerState<AddressEditPage> {
                                   return ListTile(
                                     title: Text(state.searchResults[index]),
                                     onTap: () {
-                                      _searchController.text = state.searchResults[index];
-                                      viewModel.setCurrentAddress(state.searchResults[index]);
+                                      _searchController.text =
+                                          state.searchResults[index];
+                                      viewModel.setCurrentAddress(
+                                          state.searchResults[index]);
                                     },
                                   );
                                 },
@@ -137,21 +140,9 @@ class _AddressSearchPageState extends ConsumerState<AddressEditPage> {
             child: PrimaryButton(
               text: "완료",
               onPressed: state.currentAddress != null
-                  ? () async {
-                      try {
-                        // Firebase에 주소 업데이트
-                        await profileEditViewModel.updateUserProfile(
-                          userId: widget.userId,
-                          location: state.currentAddress!,
-                        );
-
-                        // 성공적으로 업데이트 후 ProfileEditPage로 돌아가기
-                        Navigator.pop(context, state.currentAddress);
-                      } catch (e) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('오류가 발생했습니다: $e')),
-                        );
-                      }
+                  ? () {
+                      // 수정된 주소만 반환
+                      Navigator.pop(context, state.currentAddress);
                     }
                   : null,
               backgroundColor: const Color(0xFF0770E9),

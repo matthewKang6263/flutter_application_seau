@@ -15,6 +15,7 @@ class ProfileEditPage extends ConsumerStatefulWidget {
 class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
   final TextEditingController nicknameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
+  String? initialLocation;
   String? currentLocation;
   String? userId;
 
@@ -22,7 +23,7 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
   void initState() {
     super.initState();
 
-    // 초기 데이터 설정 (가입한 유저Id 가져오기)
+    // 초기 데이터 설정 (가입한 유저 ID 가져오기)
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await ref.read(profileEditViewModelProvider.notifier).loadUserData();
       final user = ref.read(profileEditViewModelProvider);
@@ -31,6 +32,7 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
           userId = user.id; // userId 설정
           nicknameController.text = user.nickname;
           emailController.text = user.email;
+          initialLocation = user.location; // 초기 위치 저장
           currentLocation = user.location;
         });
       } else {
@@ -88,9 +90,9 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
               onTap: () async {
                 final updatedLocation = await Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AddressEditPage(userId: userId!)
+                  MaterialPageRoute(
+                    builder: (context) => AddressEditPage(userId: userId!),
                   ),
-                  // 위치편집 페이지로 이동
                 );
                 if (updatedLocation != null) {
                   setState(() {
@@ -139,12 +141,11 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                 }
 
                 try {
-                  // 닉네임 또는 위치가 변경되었는지 확인
                   final isNicknameChanged =
                       nicknameController.text.isNotEmpty &&
                           nicknameController.text != user.nickname;
                   final isLocationChanged = currentLocation != null &&
-                      currentLocation != user.location;
+                      currentLocation != initialLocation;
 
                   if (!isNicknameChanged && !isLocationChanged) {
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -162,7 +163,7 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                   );
 
                   // 업데이트 성공 시 이전 페이지로 돌아감
-                  Navigator.pop(context, true); // 수정 완료 후 true 값 반환
+                  Navigator.pop(context, true);
                 } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('오류가 발생했습니다: $e')),
