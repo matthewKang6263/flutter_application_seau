@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_seau/ui/pages/chat/chat_list_page.dart';
 import 'package:flutter_application_seau/ui/pages/home/_tab/calendar_tab/calendar_tab.dart';
 import 'package:flutter_application_seau/ui/pages/home/_tab/home_tab/home_tab.dart';
-import 'package:flutter_application_seau/ui/pages/home/_tab/my_tab/my_tab.dart';
 import 'package:flutter_application_seau/ui/pages/home/home_view_model.dart';
 import 'package:flutter_application_seau/ui/pages/mypage/my_page.dart';
 
