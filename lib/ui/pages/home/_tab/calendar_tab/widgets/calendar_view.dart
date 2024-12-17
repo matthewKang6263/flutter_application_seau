@@ -92,8 +92,12 @@ class _CalendarViewState extends State<CalendarView> {
           shape: BoxShape.circle,
         ),
         todayDecoration: BoxDecoration(
-          color: Color.fromRGBO(7, 112, 233, 1).withOpacity(0.3), // 투명도가 있는 색상
+          color: Color.fromRGBO(235, 247, 255, 1), // 투명도가 있는 색상
           shape: BoxShape.circle,
+        ),
+        todayTextStyle: TextStyle(
+          color: Color.fromRGBO(6, 94, 195, 1),
+          fontSize: 14,
         ),
         markerDecoration: BoxDecoration(
           color: Color.fromRGBO(7, 112, 233, 1),
@@ -103,6 +107,10 @@ class _CalendarViewState extends State<CalendarView> {
         markerSize: 5, // 점 크기를 좀 더 크게
         markersAlignment: Alignment.bottomCenter, // 점의 위치 조정
         markerMargin: const EdgeInsets.only(top: 8),
+        cellMargin: EdgeInsets.all(12), // 셀 마진 줄이기
+        cellPadding: EdgeInsets.all(2),
+        defaultTextStyle: TextStyle(fontSize: 16), // 날짜 텍스트 크기 줄이기
+        selectedTextStyle: TextStyle(fontSize: 16, color: Colors.white),
       ),
       onDaySelected: (selectedDay, focusedDay) {
         setState(() {

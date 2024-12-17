@@ -17,7 +17,7 @@ class CalendarList extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.only(left: 16, bottom: 8),
+            padding: EdgeInsets.only(left: 16, bottom: 0, top: 10),
             child: Text(
               '전체 일정 목록',
               style: TextStyle(
@@ -28,6 +28,7 @@ class CalendarList extends StatelessWidget {
           ),
           Expanded(
             child: ListView.builder(
+              padding: EdgeInsets.only(top: 10),
               itemCount: savedItems.length,
               itemBuilder: (context, index) {
                 final item = savedItems[index];
