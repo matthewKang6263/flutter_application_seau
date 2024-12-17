@@ -44,6 +44,13 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
   }
 
   @override
+  void dispose() {
+    nicknameController.dispose();
+    emailController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final user = ref.watch(profileEditViewModelProvider);
     final profileEditViewModel =
