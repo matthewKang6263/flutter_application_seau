@@ -168,8 +168,8 @@ class _HomeTabUserListState extends ConsumerState<HomeTabUserList> {
                               user.profileImageUrl!.startsWith('http')
                           ? NetworkImage(user.profileImageUrl!)
                           : AssetImage(
-                                  'assets/images/default_profile_image.png')
-                              as ImageProvider,
+                              'assets/images/default_profile_image.png'),
+                      // as ImageProvider, 12/17 삭제
                     ),
                     title: Text(
                       user.nickname,
