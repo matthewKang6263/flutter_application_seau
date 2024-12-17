@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_seau/ui/widgets/primary_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_application_seau/ui/pages/address_search/address_search_view_model.dart';
-import 'package:flutter_application_seau/ui/pages/mypage/profile_edit/profile_edit_view_model.dart';
 
 class AddressEditPage extends ConsumerStatefulWidget {
   final String userId;
@@ -32,8 +31,6 @@ class _AddressSearchPageState extends ConsumerState<AddressEditPage> {
   Widget build(BuildContext context) {
     final viewModel = ref.watch(addressSearchViewModelProvider.notifier);
     final state = ref.watch(addressSearchViewModelProvider);
-    final profileEditViewModel =
-        ref.watch(profileEditViewModelProvider.notifier);
 
     if (state.currentAddress != null &&
         state.currentAddress != _searchController.text) {
