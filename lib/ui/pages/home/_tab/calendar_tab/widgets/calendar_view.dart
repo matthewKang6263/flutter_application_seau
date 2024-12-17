@@ -49,12 +49,12 @@ class _CalendarViewState extends State<CalendarView> {
             _events[eventDate] = [];
           }
           _events[eventDate]!.add(item);
-          print('이벤트 추가 날짜: $eventDate'); // 디버그 출력 추가
+          // print('이벤트 추가 날짜: $eventDate'); // 디버그 출력 추가
         } catch (e) {
-          print('Date parsing error: ${e.toString()}');
+          // print('Date parsing error: ${e.toString()}');
         }
       }
-      print('전체 이벤트: ${_events.length}'); // 전체 이벤트 수 출력
+      // print('전체 이벤트: ${_events.length}'); // 전체 이벤트 수 출력
     });
   }
 

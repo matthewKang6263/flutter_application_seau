@@ -35,52 +35,97 @@ class CalendarList extends StatelessWidget {
                 return Dismissible(
                   key: Key(item['id'] ?? ''),
                   direction: DismissDirection.endToStart,
-                  dismissThresholds: const {
-                    DismissDirection.endToStart: 0.5, // 20%만 스와이프하면 동작하도록 설정
-                  },
-                  background: Container(
-                    color: Colors.red,
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: Padding(
-                        padding: EdgeInsets.all(16.0),
-                        child: Icon(Icons.delete, color: Colors.white),
-                      ),
-                    ),
-                  ),
+                  // dismissThresholds: const {
+                  //   DismissDirection.endToStart: 0.5, // 20%만 스와이프하면 동작하도록 설정
+                  // },
                   confirmDismiss: (direction) async {
                     return await showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text('일정 삭제'),
-                          content: Text('이 일정을 삭제하시겠습니까?'),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          title: Text(
+                            '일정 삭제',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          content: Text(
+                            '이 일정을 삭제하시겠습니까?',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.black87,
+                            ),
+                          ),
                           actions: <Widget>[
                             TextButton(
                               onPressed: () => Navigator.of(context).pop(false),
+                              style: TextButton.styleFrom(
+                                minimumSize: Size(80, 40),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
                               child: Text(
                                 '취소',
-                                style: TextStyle(color: Colors.blue),
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.grey[600],
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                             ),
                             TextButton(
                               onPressed: () => Navigator.of(context).pop(true),
+                              style: TextButton.styleFrom(
+                                minimumSize: Size(80, 40),
+                                backgroundColor: Color.fromRGBO(7, 112, 233, 1),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
                               child: Text(
                                 '삭제',
-                                style: TextStyle(color: Colors.blue),
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                             ),
                           ],
+                          actionsPadding: EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 12),
                         );
                       },
                     );
                   },
+
                   onDismissed: (direction) {
                     onDelete(item['id'] ?? '');
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text('일정이 삭제되었습니다')),
                     );
                   },
+                  background: Container(
+                    alignment: Alignment.centerRight,
+                    color: Colors.transparent, // 전체 배경은 투명하게
+                    child: Container(
+                      // width: 50, // 50px로 제한
+                      color: Colors.red,
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: Padding(
+                          padding: EdgeInsets.all(16.0),
+                          child: Icon(Icons.delete, color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ),
+
                   child: Card(
                     margin: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                     shape: RoundedRectangleBorder(
