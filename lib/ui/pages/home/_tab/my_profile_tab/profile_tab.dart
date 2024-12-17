@@ -12,8 +12,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class ProfileTab extends ConsumerWidget {
   const ProfileTab({super.key});
 
-    // 하단 카드 스쿠버, 프리다이빙 표시 함수  
-    String _formatCertificationType(String type) {
+  // 하단 카드 스쿠버, 프리다이빙 표시 함수
+  String _formatCertificationType(String type) {
     switch (type) {
       case 'scuba':
         return 'Scubadiving';
@@ -59,15 +59,44 @@ class ProfileTab extends ConsumerWidget {
                 child: Column(
                   children: [
                     const SizedBox(height: 30),
-                    CircleAvatar(
-                      radius: 50,
-                      backgroundColor: Colors.grey[200],
-                      backgroundImage: user.profileImageUrl != null &&
-                              user.profileImageUrl!.startsWith('http')
-                          ? NetworkImage(user.profileImageUrl!)
-                          : AssetImage(
-                                  'assets/images/default_profile_image.png')
-                              as ImageProvider,
+                    Center(
+                      child: Stack(
+                        children: [
+                          // 그림자 효과
+                          Container(
+                            width: 100,
+                            height: 100,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  blurRadius: 20,
+                                  spreadRadius: 1,
+                                  offset: const Offset(-3, -3), // 왼쪽 위 그림자
+                                ),
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  blurRadius: 20,
+                                  spreadRadius: 1,
+                                  offset: const Offset(3, 3), // 오른쪽 아래 그림자
+                                ),
+                              ],
+                            ),
+                          ),
+                          // 프로필 이미지
+                          CircleAvatar(
+                            radius: 50,
+                            backgroundColor: Colors.grey[200],
+                            backgroundImage: user.profileImageUrl != null &&
+                                    user.profileImageUrl!.startsWith('http')
+                                ? NetworkImage(user.profileImageUrl!)
+                                : const AssetImage(
+                                        'assets/images/default_profile_image.png')
+                                    as ImageProvider,
+                          ),
+                        ],
+                      ),
                     ),
                     const SizedBox(height: 20),
                     Text(
