@@ -66,7 +66,7 @@ class MyPage extends ConsumerWidget {
                     const SizedBox(height: 20),
                     UserProfileImage(
                       dimension: 100,
-                      imgUrl: user.profileImageUrl ?? '',
+                      imgUrl: '',
                       onEdit: () {}, // 프로필 이미지 수정 로직 추가!
                     ),
                     const SizedBox(height: 30),
