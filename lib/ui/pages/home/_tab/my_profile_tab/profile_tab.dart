@@ -5,29 +5,30 @@ import 'package:flutter_application_seau/ui/pages/join/join_view_model.dart';
 import 'package:flutter_application_seau/ui/pages/mypage/certification_edit/certification_edit_page.dart';
 import 'package:flutter_application_seau/ui/pages/mypage/profile_edit/profile_edit_page.dart';
 import 'package:flutter_application_seau/ui/pages/mypage/widgets/info_card.dart';
+import 'package:flutter_application_seau/ui/widgets/common_toast.dart';
 import 'package:flutter_application_seau/ui/widgets/primary_button.dart';
-import 'package:flutter_application_seau/ui/widgets/user_profile_image.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class ProfileTab extends ConsumerWidget {
   const ProfileTab({super.key});
 
-  void _showToast(String message) {
-    Fluttertoast.showToast(
-      msg: message,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      backgroundColor: Colors.black87,
-      textColor: Colors.white,
-      fontSize: 16.0,
-    );
+  // 하단 카드 스쿠버, 프리다이빙 표시 함수
+  String _formatCertificationType(String type) {
+    switch (type) {
+      case 'scuba':
+        return 'Scubadiving';
+      case 'freediving':
+        return 'Freediving';
+      default:
+        return type; // 기본값
+    }
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userRepository = ref.watch(userRepositoryProvider);
-    final userFuture = userRepository.getUser(userRepository.getCurrentUserId());
+    final userFuture =
+        userRepository.getUser(userRepository.getCurrentUserId());
 
     return Scaffold(
       appBar: const ProfileTabAppBar(),
@@ -57,20 +58,55 @@ class ProfileTab extends ConsumerWidget {
                 padding: const EdgeInsets.only(bottom: 40), // 프로필 섹션 하단 패딩
                 child: Column(
                   children: [
-                    const SizedBox(height: 20),
-                    UserProfileImage(
-                      dimension: 100,
-                      imgUrl: '',
-                    ),
                     const SizedBox(height: 30),
+                    Center(
+                      child: Stack(
+                        children: [
+                          // 그림자 효과
+                          Container(
+                            width: 100,
+                            height: 100,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  blurRadius: 20,
+                                  spreadRadius: 1,
+                                  offset: const Offset(-3, -3), // 왼쪽 위 그림자
+                                ),
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  blurRadius: 20,
+                                  spreadRadius: 1,
+                                  offset: const Offset(3, 3), // 오른쪽 아래 그림자
+                                ),
+                              ],
+                            ),
+                          ),
+                          // 프로필 이미지
+                          CircleAvatar(
+                            radius: 50,
+                            backgroundColor: Colors.grey[200],
+                            backgroundImage: user.profileImageUrl != null &&
+                                    user.profileImageUrl!.startsWith('http')
+                                ? NetworkImage(user.profileImageUrl!)
+                                : const AssetImage(
+                                        'assets/images/default_profile_image.png')
+                                    as ImageProvider,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 20),
                     Text(
                       user.nickname,
                       style: const TextStyle(
-                        fontSize: 20,
+                        fontSize: 25,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 5),
+                    const SizedBox(height: 3),
                     Text(
                       user.location,
                       style: const TextStyle(fontSize: 16, color: Colors.black),
@@ -90,10 +126,11 @@ class ProfileTab extends ConsumerWidget {
                         onPressed: () async {
                           final result = await Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const ProfileEditPage()),
+                            MaterialPageRoute(
+                                builder: (context) => const ProfileEditPage()),
                           );
                           if (result == true) {
-                            _showToast('수정이 완료되었습니다.');
+                            showToast('수정이 완료되었습니다.');
                           }
                         },
                       ),
@@ -115,7 +152,7 @@ class ProfileTab extends ConsumerWidget {
                           const Icon(Icons.verified, color: Colors.blue),
                           const SizedBox(width: 5),
                           Text(
-                            user.certificationLevel,
+                            _formatCertificationType(user.certificationLevel),
                             style: const TextStyle(fontSize: 16),
                           ),
                         ],
@@ -126,7 +163,7 @@ class ProfileTab extends ConsumerWidget {
                           const Icon(Icons.waves, color: Colors.blue),
                           const SizedBox(width: 5),
                           Text(
-                            user.certificationType,
+                            _formatCertificationType(user.certificationType),
                             style: const TextStyle(fontSize: 16),
                           ),
                         ],
@@ -134,11 +171,15 @@ class ProfileTab extends ConsumerWidget {
                     ],
                   ),
                 ),
-                onTap: () {
-                  Navigator.push(
+                onTap: () async {
+                  final result = await Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const CertificationEditPage()),
+                    MaterialPageRoute(
+                        builder: (context) => const CertificationEditPage()),
                   );
+                  if (result == true) {
+                    showToast('수정이 완료되었습니다.');
+                  }
                 },
               ),
             ],

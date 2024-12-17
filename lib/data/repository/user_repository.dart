@@ -1,5 +1,4 @@
-import 'dart:io'; 
-import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:firebase_storage/firebase_storage.dart';
@@ -11,7 +10,7 @@ class UserRepository {
   // Firebase Authentication 인스턴스
   final auth.FirebaseAuth _auth = auth.FirebaseAuth.instance;
   // Firebase Storage 인스턴스
-  final FirebaseStorage _storage = FirebaseStorage.instance; 
+  final FirebaseStorage _storage = FirebaseStorage.instance;
 
   // 새 사용자 생성
   Future<void> createUser(AppUser user) async {
@@ -54,17 +53,12 @@ class UserRepository {
     }
   }
 
-// 프로필 이미지 업로드 및 URL 업데이트
-  Future<String?> uploadProfileImage(String userId, XFile image) async {
+  // 프로필 이미지 업로드
+  Future<String?> uploadProfileImage(String userId, File imageFile) async {
     try {
-      // Firebase Storage에 이미지 업로드
-      final storageRef = _storage.ref().child('profile_images/$userId/${image.name}');
-      await storageRef.putFile(File(image.path));
-      // 업로드된 이미지의 다운로드 URL 가져오기
-      final downloadUrl = await storageRef.getDownloadURL();
-      // Firestore에 프로필 이미지 URL 업데이트
-      await updateUser(userId, {'profileImageUrl': downloadUrl});
-      return downloadUrl;
+      final ref = _storage.ref().child('profile_images/$userId');
+      await ref.putFile(imageFile);
+      return await ref.getDownloadURL();
     } catch (e) {
       throw Exception('프로필 이미지 업로드 중 오류가 발생했습니다: $e');
     }
@@ -136,6 +130,19 @@ class UserRepository {
     } catch (e) {
       print('현재 사용자의 자격증 정보를 가져오는 중 오류 발생: $e');
       return null;
+    }
+  }
+
+  // 자격증 정보 업데이트
+  Future<void> updateCertification(
+      String userId, String type, String level) async {
+    try {
+      await _firestore.collection('users').doc(userId).update({
+        'certificationType': type,
+        'certificationLevel': level,
+      });
+    } catch (e) {
+      throw Exception('자격증 정보를 업데이트하는 중 오류가 발생했습니다: $e');
     }
   }
 }

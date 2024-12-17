@@ -1,17 +1,61 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_seau/ui/pages/home/home_page.dart';
+import 'package:flutter_application_seau/ui/pages/mypage/certification_edit/certification_edit_view_model.dart';
 import 'package:flutter_application_seau/ui/widgets/primary_button.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CertificationEditPage extends StatefulWidget {
+class CertificationEditPage extends ConsumerStatefulWidget {
   const CertificationEditPage({super.key});
 
   @override
-  State<CertificationEditPage> createState() => _CertificationSelectionPageState();
+  ConsumerState<CertificationEditPage> createState() =>
+      _CertificationEditPageState();
 }
 
-class _CertificationSelectionPageState extends State<CertificationEditPage> {
+class _CertificationEditPageState extends ConsumerState<CertificationEditPage> {
   String selectedType = "freediving";
   String selectedLevel = "lv2";
+  late String initialType;
+  late String initialLevel;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() async {
+      await ref.read(certificationEditViewModelProvider.notifier).loadUserData();
+      final user = ref.read(certificationEditViewModelProvider);
+      if (user != null) {
+        setState(() {
+          selectedType = user.certificationType;
+          selectedLevel = user.certificationLevel;
+          initialType = user.certificationType;
+          initialLevel = user.certificationLevel;
+        });
+      }
+    });
+  }
+
+
+  Future<void> _updateCertification() async {
+    if (selectedType == initialType && selectedLevel == initialLevel) {
+      // 수정 내역이 없는 경우
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('수정 내역이 없습니다')),
+      );
+      return;
+    }
+
+    try {
+      await ref
+          .read(certificationEditViewModelProvider.notifier)
+          .updateCertification(selectedType, selectedLevel);
+
+      Navigator.pop(context, true); // 수정 후 이전 페이지로 돌아감
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('오류가 발생했습니다: $e')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -137,14 +181,7 @@ class _CertificationSelectionPageState extends State<CertificationEditPage> {
             padding: const EdgeInsets.only(left: 18, right: 18, bottom: 60),
             child: PrimaryButton(
               text: "수정하기",
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => HomePage(),
-                  ),
-                );
-              },
+              onPressed: _updateCertification,
               backgroundColor: const Color(0xFF0770E9),
             ),
           ),
