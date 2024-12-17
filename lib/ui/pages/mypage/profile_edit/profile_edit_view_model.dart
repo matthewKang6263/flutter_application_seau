@@ -12,10 +12,15 @@ class ProfileEditViewModel extends StateNotifier<AppUser?> {
 
   // 사용자 데이터 로드
   Future<void> loadUserData() async {
-    final userId = _userRepository.getCurrentUserId(); // 현재 로그인한 사용자 ID 가져오기
-    final user = await _userRepository.getUser(userId);
-    state = user;
+    try {
+      final userId = _userRepository.getCurrentUserId(); // 현재 로그인한 사용자 ID 가져오기
+      final user = await _userRepository.getUser(userId);
+      state = user;
+    } catch (e) {
+      throw Exception('사용자 데이터를 불러오는 중 오류가 발생했습니다: $e');
+    }
   }
+
 
   // 프로필 업데이트 메서드
   Future<void> updateUserProfile({required String userId, String? nickname, String? location}) async {
@@ -24,7 +29,7 @@ class ProfileEditViewModel extends StateNotifier<AppUser?> {
     if (location != null && location.isNotEmpty) updatedFields['location'] = location;
 
     if (updatedFields.isNotEmpty) {
-      await _userRepository.updateUserFields(userId, updatedFields);
+      await _userRepository.updateUser(userId, updatedFields);
       state = state?.copyWith(nickname: nickname, location: location);
     }
   }

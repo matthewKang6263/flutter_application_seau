@@ -33,6 +33,16 @@ class UserRepository {
     }
   }
 
+  // 현재 로그인한 사용자 ID 가져오기
+  String getCurrentUserId() {
+    final user = _auth.currentUser;
+    if (user != null) {
+      return user.uid;
+    } else {
+      throw Exception('로그인된 사용자가 없습니다.');
+    }
+  }
+
   // 회원가입
   Future<String?> signUp(String email, String password) async {
     try {
