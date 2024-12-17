@@ -22,12 +22,23 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
   void initState() {
     super.initState();
 
-    // 초기 데이터 설정 (가입한 유저 데이터 불러오기)
-    final user = ref.read(profileEditViewModelProvider);
-    userId = user?.id; // userId 저장
-    nicknameController.text = user?.nickname ?? '';
-    emailController.text = user?.email ?? '';
-    currentLocation = user?.location;
+    // 초기 데이터 설정 (가입한 유저Id 가져오기)
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await ref.read(profileEditViewModelProvider.notifier).loadUserData();
+      final user = ref.read(profileEditViewModelProvider);
+      if (user != null) {
+        setState(() {
+          userId = user.id; // userId 설정
+          nicknameController.text = user.nickname;
+          emailController.text = user.email;
+          currentLocation = user.location;
+        });
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('사용자 정보를 불러올 수 없습니다.')),
+        );
+      }
+    });
   }
 
   @override
@@ -40,11 +51,6 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
     if (user == null) {
       return const Center(child: CircularProgressIndicator());
     }
-
-    // 상태가 있으면 컨트롤러에 데이터 설정
-    nicknameController.text = user.nickname;
-    emailController.text = user.email;
-    currentLocation = user.location;
 
     return Scaffold(
       backgroundColor: Colors.white, // 전체 화면 흰색 배경
@@ -120,30 +126,41 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
             PrimaryButton(
               text: '수정하기',
               onPressed: () async {
+                if (userId == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('사용자 ID를 불러올 수 없습니다.')),
+                  );
+                  return;
+                }
+
                 try {
                   // 닉네임 또는 위치가 변경되었는지 확인
                   final isNicknameChanged =
-                      nicknameController.text != user.nickname;
-                  final isLocationChanged = currentLocation != user.location;
+                      nicknameController.text.isNotEmpty &&
+                          nicknameController.text != user.nickname;
+                  final isLocationChanged = currentLocation != null &&
+                      currentLocation != user.location;
 
                   if (!isNicknameChanged && !isLocationChanged) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('수정할 내용이 없습니다.')),
                     );
-                    return; // 변경사항이 없으므로 함수 종료
+                    return;
                   }
 
                   // 변경사항이 있으면 Firebase에 업데이트
                   await profileEditViewModel.updateUserProfile(
                     userId: userId!,
-                    nickname: isNicknameChanged ? nicknameController.text : null,
+                    nickname:
+                        isNicknameChanged ? nicknameController.text : null,
                     location: isLocationChanged ? currentLocation : null,
                   );
+
                   // 업데이트 성공 시 이전 페이지로 돌아감
                   Navigator.pop(context, true); // 수정 완료 후 true 값 반환
                 } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(e.toString())),
+                    SnackBar(content: Text('오류가 발생했습니다: $e')),
                   );
                 }
               },
