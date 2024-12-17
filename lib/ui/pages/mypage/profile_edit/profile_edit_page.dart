@@ -123,14 +123,12 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
             // 3. 닉네임 입력 필드
             CustomTextField(
               label: '닉네임',
-              hintText: 'akeetuitui',
               textcontroller: nicknameController,
             ),
             const SizedBox(height: 25),
             // 4. 이메일 입력 필드
             CustomTextField(
               label: '이메일',
-              hintText: 'divinglover@gmail.com',
               readOnly: true,
               textcontroller: emailController,
               style: const TextStyle(color: Colors.grey),

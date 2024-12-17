@@ -27,7 +27,8 @@ class ProfileTab extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userRepository = ref.watch(userRepositoryProvider);
-    final userFuture = userRepository.getUser(userRepository.getCurrentUserId());
+    final userFuture =
+        userRepository.getUser(userRepository.getCurrentUserId());
 
     return Scaffold(
       appBar: const ProfileTabAppBar(),
@@ -58,11 +59,17 @@ class ProfileTab extends ConsumerWidget {
                 child: Column(
                   children: [
                     const SizedBox(height: 20),
-                    UserProfileImage(
-                      dimension: 100,
-                      imgUrl: '',
+                    CircleAvatar(
+                      radius: 50,
+                      backgroundColor: Colors.grey[200],
+                      backgroundImage: user.profileImageUrl != null &&
+                              user.profileImageUrl!.startsWith('http')
+                          ? NetworkImage(user.profileImageUrl!)
+                          : AssetImage(
+                                  'assets/images/default_profile_image.png')
+                              as ImageProvider,
                     ),
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 20),
                     Text(
                       user.nickname,
                       style: const TextStyle(
@@ -90,7 +97,8 @@ class ProfileTab extends ConsumerWidget {
                         onPressed: () async {
                           final result = await Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const ProfileEditPage()),
+                            MaterialPageRoute(
+                                builder: (context) => const ProfileEditPage()),
                           );
                           if (result == true) {
                             _showToast('수정이 완료되었습니다.');
@@ -137,7 +145,8 @@ class ProfileTab extends ConsumerWidget {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const CertificationEditPage()),
+                    MaterialPageRoute(
+                        builder: (context) => const CertificationEditPage()),
                   );
                 },
               ),
