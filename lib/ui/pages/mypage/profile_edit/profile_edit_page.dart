@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_seau/ui/pages/address_search/address_search_page.dart';
 import 'package:flutter_application_seau/ui/pages/mypage/address_edit/address_edit_page.dart';
 import 'package:flutter_application_seau/ui/widgets/primary_button.dart';
 import 'package:flutter_application_seau/ui/widgets/user_profile_image.dart';
