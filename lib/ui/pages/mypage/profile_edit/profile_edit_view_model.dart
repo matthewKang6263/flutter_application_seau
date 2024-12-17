@@ -12,7 +12,6 @@ class ProfileEditViewModel extends StateNotifier<AppUser?> {
 
   final UserRepository _userRepository;
   final ImagePicker _picker = ImagePicker();
-  File? _selectedImage;
 
   // 사용자 데이터 로드
   Future<void> loadUserData() async {
@@ -25,29 +24,33 @@ class ProfileEditViewModel extends StateNotifier<AppUser?> {
     }
   }
 
-  // 이미지 선택
+  // 이미지 선택 및 즉시 Firebase 업로드
   Future<void> pickProfileImage() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      _selectedImage = File(pickedFile.path);
+    try {
+      final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+      if (pickedFile != null) {
+        final userId = _userRepository.getCurrentUserId();
+        final imageUrl = await _userRepository.uploadProfileImage(userId, File(pickedFile.path));
+
+        if (imageUrl != null) {
+          // Firestore에 이미지 URL 저장
+          await _userRepository.updateUser(userId, {'profileImageUrl': imageUrl});
+          // 상태 업데이트
+          state = state?.copyWith(profileImageUrl: imageUrl);
+        }
+      }
+    } catch (e) {
+      throw Exception('이미지 업로드 중 오류가 발생했습니다: $e');
     }
   }
 
-  // 프로필 업데이트 (이미지, 닉네임, 위치)
+  // 프로필 업데이트 (닉네임, 위치)
   Future<void> updateUserProfile({
     required String userId,
     String? nickname,
     String? location,
   }) async {
     final updatedFields = <String, dynamic>{};
-
-    // 프로필 이미지 업로드
-    if (_selectedImage != null) {
-      final imageUrl = await _userRepository.uploadProfileImage(userId, _selectedImage!);
-      if (imageUrl != null) {
-        updatedFields['profileImageUrl'] = imageUrl;
-      }
-    }
 
     // 닉네임과 위치 업데이트
     if (nickname != null && nickname.isNotEmpty) updatedFields['nickname'] = nickname;
