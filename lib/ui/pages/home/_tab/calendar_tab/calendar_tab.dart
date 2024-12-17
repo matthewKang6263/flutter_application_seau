@@ -60,7 +60,14 @@ class _CalendarTabState extends State<CalendarTab> {
                       ),
                       eventsAsyncValue.when(
                         data: (events) => CalendarList(
-                            savedItems: events.map((e) => e.toMap()).toList()),
+                          savedItems: events.map((e) => e.toMap()).toList(),
+                          onDelete: (String id) {
+                            // 여기에서 실제 삭제 로직을 구현합니다.
+                            ref
+                                .read(calendarRepositoryProvider)
+                                .deleteEvent(id);
+                          },
+                        ),
                         loading: () => CircularProgressIndicator(),
                         error: (_, __) => Text('Error loading events'),
                       ),

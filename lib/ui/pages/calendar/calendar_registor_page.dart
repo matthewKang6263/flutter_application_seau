@@ -4,20 +4,19 @@ import 'package:flutter_application_seau/ui/widgets/select_field.dart';
 import 'package:flutter_application_seau/ui/pages/home/home_page.dart';
 import 'package:flutter_application_seau/ui/widgets/primary_button.dart';
 
-class CalendarRegistorPage extends StatelessWidget {
-  final DateTime selectedDate; // 선택된 날짜를 받아오는 변수 추가
+class CalendarRegistorPage extends StatefulWidget {
+  final DateTime selectedDate;
 
   CalendarRegistorPage({
     Key? key,
     required this.selectedDate,
   }) : super(key: key);
 
-  final TextEditingController dateController = TextEditingController();
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController timeController = TextEditingController();
-  final TextEditingController locationController = TextEditingController();
+  @override
+  _CalendarRegistorPageState createState() => _CalendarRegistorPageState();
+}
 
-  // 요일을 한글로 변환하는 함수
+class _CalendarRegistorPageState extends State<CalendarRegistorPage> {
   String getKoreanWeekday(int weekday) {
     const weekdays = ['월', '화', '수', '목', '금', '토', '일'];
     return weekdays[weekday - 1];
@@ -28,12 +27,44 @@ class CalendarRegistorPage extends StatelessWidget {
     return weekdays[weekday - 1];
   }
 
+  final TextEditingController dateController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController timeController = TextEditingController();
+  final TextEditingController locationController = TextEditingController();
+
+  bool isButtonEnabled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    dateController.text =
+        '${widget.selectedDate.year}년 ${widget.selectedDate.month}월 ${widget.selectedDate.day}일 ${getKoreanWeekday(widget.selectedDate.weekday)}요일';
+
+    nameController.addListener(updateButtonState);
+    timeController.addListener(updateButtonState);
+    locationController.addListener(updateButtonState);
+  }
+
+  void updateButtonState() {
+    setState(() {
+      isButtonEnabled = nameController.text.isNotEmpty &&
+          timeController.text.isNotEmpty &&
+          locationController.text.isNotEmpty;
+    });
+  }
+
+  @override
+  void dispose() {
+    nameController.removeListener(updateButtonState);
+    timeController.removeListener(updateButtonState);
+    locationController.removeListener(updateButtonState);
+    super.dispose();
+  }
+
+  // ... 기존의 다른 메서드들 ...
+
   @override
   Widget build(BuildContext context) {
-    // 선택된 날짜를 자동으로 설정
-    dateController.text =
-        '${selectedDate.year}년 ${selectedDate.month}월 ${selectedDate.day}일 ${getKoreanWeekday(selectedDate.weekday)}요일';
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -54,10 +85,8 @@ class CalendarRegistorPage extends StatelessWidget {
       ),
       body: SafeArea(
         child: Column(
-          // SafeArea의 child를 Column으로 변경
           children: [
             Expanded(
-              // 기존 Expanded 유지
               child: SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -88,7 +117,7 @@ class CalendarRegistorPage extends StatelessWidget {
                       InputField(
                         controller: timeController,
                         label: '입장 시간',
-                        hintText: '예시) 오후 2:00',
+                        hintText: '예시) 오후 2시',
                         suffixIcon: Icons.access_time,
                       ),
                       SizedBox(height: 16),
@@ -106,22 +135,26 @@ class CalendarRegistorPage extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
               child: PrimaryButton(
                 text: "등록하기",
-                onPressed: () {
-                  String name = nameController.text;
-                  String date = dateController.text;
-                  String time = timeController.text;
-                  String location = locationController.text;
+                onPressed: isButtonEnabled
+                    ? () {
+                        String name = nameController.text;
+                        String date = dateController.text;
+                        String time = timeController.text;
+                        String location = locationController.text;
 
-                  Navigator.pop(context, {
-                    'name': name,
-                    'date': date,
-                    'time': time,
-                    'location': location,
-                    'weekday': getEnglishWeekday(selectedDate.weekday),
-                    'day': selectedDate.day.toString(),
-                  });
-                },
-                backgroundColor: const Color(0xFF0770E9), // 기존 버튼 색상
+                        Navigator.pop(context, {
+                          'name': name,
+                          'date': date,
+                          'time': time,
+                          'location': location,
+                          'weekday':
+                              getEnglishWeekday(widget.selectedDate.weekday),
+                          'day': widget.selectedDate.day.toString(),
+                        });
+                      }
+                    : null,
+                backgroundColor:
+                    isButtonEnabled ? const Color(0xFF0770E9) : Colors.grey,
               ),
             ),
           ],
