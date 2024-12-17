@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_seau/ui/pages/chat/chat_detail/chat_detail_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_application_seau/data/model/app_user.dart';
 import 'package:flutter_application_seau/data/repository/user_repository.dart';
@@ -198,7 +199,14 @@ class _HomeTabUserListState extends ConsumerState<HomeTabUserList> {
                     ),
                     trailing: OutlinedButton.icon(
                       onPressed: () {
-                        // TODO: 채팅 기능 구현
+                        Navigator.push(context, MaterialPageRoute(
+                          builder: (context) {
+                            return ChatDetailPage(
+                              userName: user.nickname,
+                              userImg: user.profileImageUrl,
+                            );
+                          },
+                        ));
                       },
                       icon: Icon(
                         Icons.chat_bubble_outline,
