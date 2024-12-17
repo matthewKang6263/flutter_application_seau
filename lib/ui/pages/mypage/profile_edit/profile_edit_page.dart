@@ -85,13 +85,18 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
             // 2. 위치 입력 필드
             GestureDetector(
               behavior: HitTestBehavior.translucent,
-              onTap: () {
-                Navigator.push(
+              onTap: () async {
+                final updatedLocation = await Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          AddressEditPage()), // [가입-위치설정]페이지로 이동
+                  MaterialPageRoute(builder: (context) => AddressEditPage(userId: userId!)
+                  ),
+                  // 위치편집 페이지로 이동
                 );
+                if (updatedLocation != null) {
+                  setState(() {
+                    currentLocation = updatedLocation;
+                  });
+                }
               },
               child: IgnorePointer(
                 // 이벤트를 child가 가져가지 않도록 방지

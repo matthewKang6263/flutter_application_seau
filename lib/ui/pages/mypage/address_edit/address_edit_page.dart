@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_seau/ui/widgets/primary_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_application_seau/ui/pages/address_search/address_search_view_model.dart';
-import 'package:flutter_application_seau/ui/pages/join/join_view_model.dart';
+import 'package:flutter_application_seau/ui/pages/mypage/profile_edit/profile_edit_view_model.dart';
 
-// StatefulWidget으로 변경하여 controller 관리
 class AddressEditPage extends ConsumerStatefulWidget {
-  const AddressEditPage({super.key});
+  final String userId;
+
+  const AddressEditPage({super.key, required this.userId});
 
   @override
   ConsumerState<AddressEditPage> createState() => _AddressSearchPageState();
 }
 
 class _AddressSearchPageState extends ConsumerState<AddressEditPage> {
-  // TextField controller 선언
   late TextEditingController _searchController;
 
   @override
@@ -31,9 +32,8 @@ class _AddressSearchPageState extends ConsumerState<AddressEditPage> {
   Widget build(BuildContext context) {
     final viewModel = ref.watch(addressSearchViewModelProvider.notifier);
     final state = ref.watch(addressSearchViewModelProvider);
-    final joinViewModel = ref.watch(joinViewModelProvider.notifier);
+    final profileEditViewModel = ref.watch(profileEditViewModelProvider.notifier);
 
-    // state.currentAddress가 변경될 때 TextField 업데이트
     if (state.currentAddress != null &&
         state.currentAddress != _searchController.text) {
       _searchController.text = state.currentAddress!;
@@ -66,7 +66,6 @@ class _AddressSearchPageState extends ConsumerState<AddressEditPage> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  // TextField 수정
                   TextField(
                     controller: _searchController,
                     onChanged: (value) => viewModel.searchLocation(value),
@@ -80,7 +79,6 @@ class _AddressSearchPageState extends ConsumerState<AddressEditPage> {
                         borderRadius: BorderRadius.circular(6),
                         borderSide: BorderSide.none,
                       ),
-                      // 검색어 지우기 버튼 추가
                       suffixIcon: _searchController.text.isNotEmpty
                           ? IconButton(
                               icon: const Icon(Icons.clear),
@@ -93,7 +91,6 @@ class _AddressSearchPageState extends ConsumerState<AddressEditPage> {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  // 현재 위치로 찾기 버튼
                   ElevatedButton.icon(
                     onPressed: () => viewModel.getCurrentLocation(),
                     style: ElevatedButton.styleFrom(
@@ -113,7 +110,6 @@ class _AddressSearchPageState extends ConsumerState<AddressEditPage> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  // 검색 결과 리스트
                   Expanded(
                     child: state.isLoading
                         ? const Center(child: CircularProgressIndicator())
@@ -125,10 +121,8 @@ class _AddressSearchPageState extends ConsumerState<AddressEditPage> {
                                   return ListTile(
                                     title: Text(state.searchResults[index]),
                                     onTap: () {
-                                      _searchController.text =
-                                          state.searchResults[index];
-                                      viewModel.setCurrentAddress(
-                                          state.searchResults[index]);
+                                      _searchController.text = state.searchResults[index];
+                                      viewModel.setCurrentAddress(state.searchResults[index]);
                                     },
                                   );
                                 },
@@ -136,6 +130,31 @@ class _AddressSearchPageState extends ConsumerState<AddressEditPage> {
                   ),
                 ],
               ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18),
+            child: PrimaryButton(
+              text: "완료",
+              onPressed: state.currentAddress != null
+                  ? () async {
+                      try {
+                        // Firebase에 주소 업데이트
+                        await profileEditViewModel.updateUserProfile(
+                          userId: widget.userId,
+                          location: state.currentAddress!,
+                        );
+
+                        // 성공적으로 업데이트 후 ProfileEditPage로 돌아가기
+                        Navigator.pop(context, state.currentAddress);
+                      } catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('오류가 발생했습니다: $e')),
+                        );
+                      }
+                    }
+                  : null,
+              backgroundColor: const Color(0xFF0770E9),
             ),
           ),
         ],
