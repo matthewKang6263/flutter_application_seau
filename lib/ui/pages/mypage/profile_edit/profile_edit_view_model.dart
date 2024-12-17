@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_application_seau/data/model/app_user.dart';
 import 'package:flutter_application_seau/data/repository/user_repository.dart';
 
+// 1. 클래스 생성
+// 2. 뷰모델 만들기
 class ProfileEditViewModel extends StateNotifier<AppUser?> {
   ProfileEditViewModel(this._userRepository) : super(null) {
     loadUserData();

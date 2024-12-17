@@ -9,7 +9,7 @@ class AppUser {
   final String certificationLevel;
   final String? profileImageUrl;
 
-  AppUser({
+  AppUser ({
     required this.id,
     required this.nickname,
     required this.email,
@@ -18,6 +18,27 @@ class AppUser {
     required this.certificationLevel,
     this.profileImageUrl,
   });
+
+   // copyWith 메서드 추가 (프로필 수정 시 원하는 항목만 수정)
+  AppUser copyWith({
+    String? id,
+    String? nickname,
+    String? email,
+    String? location,
+    String? certificationType,
+    String? certificationLevel,
+    String? profileImageUrl,
+  }) {
+    return AppUser(
+      id: id ?? this.id,
+      nickname: nickname ?? this.nickname,
+      email: email ?? this.email,
+      location: location ?? this.location,
+      certificationType: certificationType ?? this.certificationType,
+      certificationLevel: certificationLevel ?? this.certificationLevel,
+      profileImageUrl: profileImageUrl ?? this.profileImageUrl,
+    );
+  }
 
   // Firestore 문서를 AppUser 객체로 변환하는 팩토리 메서드
   factory AppUser.fromFirestore(DocumentSnapshot doc) {
