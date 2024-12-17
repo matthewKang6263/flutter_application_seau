@@ -5,22 +5,23 @@ import 'package:flutter_application_seau/ui/pages/join/join_view_model.dart';
 import 'package:flutter_application_seau/ui/pages/mypage/certification_edit/certification_edit_page.dart';
 import 'package:flutter_application_seau/ui/pages/mypage/profile_edit/profile_edit_page.dart';
 import 'package:flutter_application_seau/ui/pages/mypage/widgets/info_card.dart';
+import 'package:flutter_application_seau/ui/widgets/common_toast.dart';
 import 'package:flutter_application_seau/ui/widgets/primary_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class ProfileTab extends ConsumerWidget {
   const ProfileTab({super.key});
 
-  void _showToast(String message) {
-    Fluttertoast.showToast(
-      msg: message,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      backgroundColor: Colors.black87,
-      textColor: Colors.white,
-      fontSize: 16.0,
-    );
+    // 하단 카드 스쿠버, 프리다이빙 표시 함수  
+    String _formatCertificationType(String type) {
+    switch (type) {
+      case 'scuba':
+        return 'Scubadiving';
+      case 'freediving':
+        return 'Freediving';
+      default:
+        return type; // 기본값
+    }
   }
 
   @override
@@ -100,7 +101,7 @@ class ProfileTab extends ConsumerWidget {
                                 builder: (context) => const ProfileEditPage()),
                           );
                           if (result == true) {
-                            _showToast('수정이 완료되었습니다.');
+                            showToast('수정이 완료되었습니다.');
                           }
                         },
                       ),
@@ -122,7 +123,7 @@ class ProfileTab extends ConsumerWidget {
                           const Icon(Icons.verified, color: Colors.blue),
                           const SizedBox(width: 5),
                           Text(
-                            user.certificationLevel,
+                            _formatCertificationType(user.certificationLevel),
                             style: const TextStyle(fontSize: 16),
                           ),
                         ],
@@ -133,7 +134,7 @@ class ProfileTab extends ConsumerWidget {
                           const Icon(Icons.waves, color: Colors.blue),
                           const SizedBox(width: 5),
                           Text(
-                            user.certificationType,
+                            _formatCertificationType(user.certificationType),
                             style: const TextStyle(fontSize: 16),
                           ),
                         ],
@@ -141,12 +142,15 @@ class ProfileTab extends ConsumerWidget {
                     ],
                   ),
                 ),
-                onTap: () {
-                  Navigator.push(
+                onTap: () async {
+                  final result = await Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => const CertificationEditPage()),
                   );
+                  if (result == true) {
+                    showToast('수정이 완료되었습니다.');
+                  }
                 },
               ),
             ],
