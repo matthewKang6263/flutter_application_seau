@@ -82,12 +82,13 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
             const SizedBox(height: 20),
             // 1. 프로필 이미지
             Center(
-              child: UserProfileImage(
-                dimension: 100,
-                imgUrl: '', // 이미지 URL이 없으면 기본 아이콘 표시
-                onEdit: () {
-                  // 프로필 이미지 수정 로직
-                },
+              child: CircleAvatar(
+                radius: 60,
+                backgroundImage: user.profileImageUrl != null &&
+                        user.profileImageUrl!.isNotEmpty
+                    ? NetworkImage(user.profileImageUrl!)
+                    : AssetImage('assets/images/default_profile_image.png')
+                        as ImageProvider,
               ),
             ),
             const SizedBox(height: 40),
