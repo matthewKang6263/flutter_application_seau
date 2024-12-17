@@ -12,6 +12,9 @@ class ProfileEditViewModel extends StateNotifier<AppUser?> {
 
   final UserRepository _userRepository;
   final ImagePicker _picker = ImagePicker();
+  bool _isImageUpdated = false; // 이미지가 업데이트 됐는지 확인
+
+  bool get isImageUpdated => _isImageUpdated;
 
   // 사용자 데이터 로드
   Future<void> loadUserData() async {
@@ -37,6 +40,7 @@ class ProfileEditViewModel extends StateNotifier<AppUser?> {
           await _userRepository.updateUser(userId, {'profileImageUrl': imageUrl});
           // 상태 업데이트
           state = state?.copyWith(profileImageUrl: imageUrl);
+          _isImageUpdated = true; // 이미지를 선택하면 true로 설정
         }
       }
     } catch (e) {
@@ -51,6 +55,11 @@ class ProfileEditViewModel extends StateNotifier<AppUser?> {
     String? location,
   }) async {
     final updatedFields = <String, dynamic>{};
+
+      if (_isImageUpdated) {
+      updatedFields['profileImageUrl'] = state?.profileImageUrl;
+      _isImageUpdated = false; // 플래그 초기화
+    }
 
     // 닉네임과 위치 업데이트
     if (nickname != null && nickname.isNotEmpty) updatedFields['nickname'] = nickname;

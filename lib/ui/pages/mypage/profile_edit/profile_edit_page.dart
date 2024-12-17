@@ -190,8 +190,9 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                           nicknameController.text != user.nickname;
                   final isLocationChanged = currentLocation != null &&
                       currentLocation != initialLocation;
+                  final isImageUpdated = profileEditViewModel.isImageUpdated;
 
-                  if (!isNicknameChanged && !isLocationChanged) {
+                  if (!isNicknameChanged && !isLocationChanged && !isImageUpdated) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('수정할 내용이 없습니다.')),
                     );
