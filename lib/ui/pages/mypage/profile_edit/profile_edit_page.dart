@@ -18,12 +18,6 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
   String? currentLocation;
   String? userId;
 
-  // @override
-  // Widget build(BuildContext context) {
-  //   // final locationController = TextEditingController($my page..);
-  //   // final idController = TextEditingController($);
-  //   // final mailController = TextEditingController($);
-
   @override
   void initState() {
     super.initState();
@@ -38,8 +32,19 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
 
   @override
   Widget build(BuildContext context) {
+    final user = ref.watch(profileEditViewModelProvider);
     final profileEditViewModel =
         ref.watch(profileEditViewModelProvider.notifier);
+
+    // 상태가 null이면 로딩 상태를 표시
+    if (user == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    // 상태가 있으면 컨트롤러에 데이터 설정
+    nicknameController.text = user.nickname;
+    emailController.text = user.email;
+    currentLocation = user.location;
 
     return Scaffold(
       backgroundColor: Colors.white, // 전체 화면 흰색 배경
@@ -108,6 +113,7 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
               hintText: 'divinglover@gmail.com',
               readOnly: true,
               textcontroller: emailController,
+              style: const TextStyle(color: Colors.grey), 
             ),
             const Spacer(), // 아래 여백 확보
             // 수정하기 버튼
@@ -143,8 +149,9 @@ class CustomTextField extends StatelessWidget {
   final String label;
   final String? hintText;
   final bool obscureText; // 비밀번호 입력 여부
-  final bool readOnly; // 입력 필드를 읽기 전용으로 (true시 수정 불가, 이메일에 적용!)
-  final IconData? prefixIcon; // 입력 필드 왼쪽에 표시할 아이콘 (선택, 위치에 적용(돋보기)!)
+  final bool readOnly; // 입력 필드를 읽기 전용으로 (true시 수정 불가, 이메일에 적용)
+  final IconData? prefixIcon; // 입력 필드 왼쪽에 표시할 아이콘
+  final TextStyle? style;
 
   const CustomTextField({
     super.key,
@@ -154,6 +161,7 @@ class CustomTextField extends StatelessWidget {
     this.obscureText = false,
     this.readOnly = false,
     this.prefixIcon,
+    this.style,
   });
 
   @override
@@ -175,6 +183,7 @@ class CustomTextField extends StatelessWidget {
           controller: textcontroller,
           obscureText: obscureText,
           readOnly: readOnly,
+          style: style,
           decoration: InputDecoration(
             hintText: hintText,
             filled: true,
