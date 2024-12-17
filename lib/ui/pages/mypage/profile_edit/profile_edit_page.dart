@@ -67,7 +67,7 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
         title: const Text(
           '프로필 수정',
           style: TextStyle(
-            fontSize: 20,
+            fontSize: 16,
             fontWeight: FontWeight.bold,
           ),
         ),
