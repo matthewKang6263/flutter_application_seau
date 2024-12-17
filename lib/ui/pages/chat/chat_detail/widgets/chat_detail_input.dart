@@ -103,16 +103,23 @@ class _ChatDetailInputState extends State<ChatDetailInput> {
               ),
             ),
           ),
-          SizedBox(width: 12),
+          SizedBox(width: 4),
           // 전송 버튼
           GestureDetector(
             onTap: _handleSend,
-            child: Text(
-              '전송',
-              style: TextStyle(
-                color: Colors.grey[500],
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Colors.transparent,
+              ),
+              child: Text(
+                '전송',
+                style: TextStyle(
+                  color: Color(0xFF0770E9),
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ),
