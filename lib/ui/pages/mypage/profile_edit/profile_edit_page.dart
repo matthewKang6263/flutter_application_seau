@@ -77,7 +77,7 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
             Center(
               child: UserProfileImage(
                 dimension: 100,
-                imgUrl: '', // 이미지 URL이 없으면 기본 아이콘 표시
+                imgUrl: user.profileImageUrl, // 이미지 URL이 없으면 기본 아이콘 표시
                 onEdit: () {
                   // 프로필 이미지 수정 로직
                 },
