@@ -6,7 +6,6 @@ import 'package:flutter_application_seau/ui/pages/mypage/certification_edit/cert
 import 'package:flutter_application_seau/ui/pages/mypage/profile_edit/profile_edit_page.dart';
 import 'package:flutter_application_seau/ui/pages/mypage/widgets/info_card.dart';
 import 'package:flutter_application_seau/ui/widgets/primary_button.dart';
-import 'package:flutter_application_seau/ui/widgets/user_profile_image.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -58,7 +57,7 @@ class ProfileTab extends ConsumerWidget {
                 padding: const EdgeInsets.only(bottom: 40), // 프로필 섹션 하단 패딩
                 child: Column(
                   children: [
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 30),
                     CircleAvatar(
                       radius: 50,
                       backgroundColor: Colors.grey[200],
@@ -73,11 +72,11 @@ class ProfileTab extends ConsumerWidget {
                     Text(
                       user.nickname,
                       style: const TextStyle(
-                        fontSize: 20,
+                        fontSize: 25,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 5),
+                    const SizedBox(height: 3),
                     Text(
                       user.location,
                       style: const TextStyle(fontSize: 16, color: Colors.black),
