@@ -24,8 +24,13 @@ class UserRepository {
   }
 
   // 사용자 정보 업데이트
-  Future<void> updateUser(AppUser user) async {
-    await _firestore.collection('users').doc(user.id).update(user.toMap());
+  Future<void> updateUser(
+      String userId, Map<String, dynamic> updatedFields) async {
+    try {
+      await _firestore.collection('users').doc(userId).update(updatedFields);
+    } catch (e) {
+      throw Exception('사용자 정보를 업데이트하는 중 오류가 발생했습니다: $e');
+    }
   }
 
   // 회원가입

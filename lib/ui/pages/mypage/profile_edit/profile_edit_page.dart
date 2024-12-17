@@ -1,16 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_seau/ui/pages/mypage/address_edit/address_edit_page.dart';
+import 'package:flutter_application_seau/ui/pages/mypage/profile_edit/profile_edit_view_model.dart';
 import 'package:flutter_application_seau/ui/widgets/primary_button.dart';
 import 'package:flutter_application_seau/ui/widgets/user_profile_image.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class EditPage extends StatelessWidget {
-  const EditPage({super.key});
+class ProfileEditPage extends ConsumerStatefulWidget {
+  const ProfileEditPage({super.key});
+
+  @override
+  ConsumerState<ProfileEditPage> createState() => _ProfileEditPageState();
+}
+
+class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
+  final TextEditingController nicknameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  String? currentLocation;
+  String? userId;
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   // final locationController = TextEditingController($my page..);
+  //   // final idController = TextEditingController($);
+  //   // final mailController = TextEditingController($);
+
+  @override
+  void initState() {
+    super.initState();
+
+    // 초기 데이터 설정 (가입한 유저 데이터 불러오기)
+    final user = ref.read(profileEditViewModelProvider);
+    userId = user?.id; // userId 저장
+    nicknameController.text = user?.nickname ?? '';
+    emailController.text = user?.email ?? '';
+    currentLocation = user?.location ?? '주소를 설정해 주세요';
+  }
 
   @override
   Widget build(BuildContext context) {
-    // final locationController = TextEditingController($my page..);
-    // final idController = TextEditingController($);
-    // final mailController = TextEditingController($);
+    final profileEditViewModel =
+        ref.watch(profileEditViewModelProvider.notifier);
 
     return Scaffold(
       backgroundColor: Colors.white, // 전체 화면 흰색 배경
@@ -48,41 +77,57 @@ class EditPage extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AddressEditPage()), // [가입-위치설정]페이지로 이동
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          AddressEditPage()), // [가입-위치설정]페이지로 이동
                 );
               },
-              child: IgnorePointer( // 이벤트를 child가 가져가지 않도록 방지
+              child: IgnorePointer(
+                // 이벤트를 child가 가져가지 않도록 방지
                 ignoring: true,
-                child: const CustomTextField(
+                child: CustomTextField(
                   label: '위치',
-                  hintText: '서울시 강동구 명일동',
+                  hintText: currentLocation,
                   prefixIcon: Icons.search,
                   readOnly: true,
+                  textcontroller: TextEditingController(text: currentLocation),
                 ),
               ),
             ),
             const SizedBox(height: 25),
-            // 3. 아이디 입력 필드
-            const CustomTextField(
-              label: '아이디',
+            // 3. 닉네임 입력 필드
+            CustomTextField(
+              label: '닉네임',
               hintText: 'akeetuitui',
+              textcontroller: nicknameController,
             ),
             const SizedBox(height: 25),
             // 4. 이메일 입력 필드
-            const CustomTextField(
+            CustomTextField(
               label: '이메일',
               hintText: 'divinglover@gmail.com',
               readOnly: true,
+              textcontroller: emailController,
             ),
             const Spacer(), // 아래 여백 확보
             // 수정하기 버튼
             PrimaryButton(
               text: '수정하기',
-              onPressed: () { 
-                // 세 가지 texteditingcontroller의 value 혹은 text 가져다가 firestore에 업데이트 (이게 이루어지면, pop true값 반환 & 실패하면 알림 띄우거나 머무르는 작업)
-                Navigator.pop(context, true); // true 값 반환, 수정 완료됨을 알림
+              onPressed: () async {
+                try {
+                  await profileEditViewModel.updateUserProfile(
+                    userId: userId!,
+                    nickname: nicknameController.text,
+                    location: currentLocation,
+                  );
+                  Navigator.pop(context, true); // 수정 완료 후 true 값 반환
+                } catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(e.toString())),
+                  );
+                }
               },
-              backgroundColor: const Color(0xFF0770E9), // 버튼 색상
+              backgroundColor: const Color(0xFF0770E9),
             ),
             const SizedBox(height: 60),
           ],
@@ -94,7 +139,7 @@ class EditPage extends StatelessWidget {
 
 // CustomTextField 위젯
 class CustomTextField extends StatelessWidget {
-  // final TextEditingController textcontroller;
+  final TextEditingController textcontroller;
   final String label;
   final String? hintText;
   final bool obscureText; // 비밀번호 입력 여부
@@ -103,7 +148,7 @@ class CustomTextField extends StatelessWidget {
 
   const CustomTextField({
     super.key,
-    // required this.textcontroller,
+    required this.textcontroller,
     required this.label,
     this.hintText,
     this.obscureText = false,
@@ -115,7 +160,7 @@ class CustomTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       // 텍스트필드 제목 & 텍스트필드 칼럼
-      crossAxisAlignment: CrossAxisAlignment.start, // 왼쪽 정렬
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           label, // 텍스트필드 제목
@@ -127,8 +172,7 @@ class CustomTextField extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         TextField(
-          // controller: textcontroller, 
-          // 텍스트필드
+          controller: textcontroller,
           obscureText: obscureText,
           readOnly: readOnly,
           decoration: InputDecoration(

@@ -78,7 +78,7 @@ class MyPage extends StatelessWidget {
                         final result = await Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => EditPage() // 버튼 클릭 시 페이지 이동
+                              builder: (context) => ProfileEditPage() // 버튼 클릭 시 페이지 이동
                               ),
                         );
                         if (result == true) {
