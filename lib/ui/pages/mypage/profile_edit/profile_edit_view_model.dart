@@ -25,7 +25,11 @@ class ProfileEditViewModel extends StateNotifier<AppUser?> {
 
 
   // 프로필 업데이트 메서드
-  Future<void> updateUserProfile({required String userId, String? nickname, String? location}) async {
+  Future<void> updateUserProfile({
+    required String userId,
+    String? nickname,
+    String? location
+    }) async {
     final updatedFields = <String, dynamic>{};
     if (nickname != null && nickname.isNotEmpty) updatedFields['nickname'] = nickname;
     if (location != null && location.isNotEmpty) updatedFields['location'] = location;

@@ -27,7 +27,7 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
     userId = user?.id; // userId 저장
     nicknameController.text = user?.nickname ?? '';
     emailController.text = user?.email ?? '';
-    currentLocation = user?.location ?? '주소를 설정해 주세요';
+    currentLocation = user?.location;
   }
 
   @override
@@ -113,7 +113,7 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
               hintText: 'divinglover@gmail.com',
               readOnly: true,
               textcontroller: emailController,
-              style: const TextStyle(color: Colors.grey), 
+              style: const TextStyle(color: Colors.grey),
             ),
             const Spacer(), // 아래 여백 확보
             // 수정하기 버튼
@@ -121,11 +121,25 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
               text: '수정하기',
               onPressed: () async {
                 try {
+                  // 닉네임 또는 위치가 변경되었는지 확인
+                  final isNicknameChanged =
+                      nicknameController.text != user.nickname;
+                  final isLocationChanged = currentLocation != user.location;
+
+                  if (!isNicknameChanged && !isLocationChanged) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('수정할 내용이 없습니다.')),
+                    );
+                    return; // 변경사항이 없으므로 함수 종료
+                  }
+
+                  // 변경사항이 있으면 Firebase에 업데이트
                   await profileEditViewModel.updateUserProfile(
                     userId: userId!,
-                    nickname: nicknameController.text,
-                    location: currentLocation,
+                    nickname: isNicknameChanged ? nicknameController.text : null,
+                    location: isLocationChanged ? currentLocation : null,
                   );
+                  // 업데이트 성공 시 이전 페이지로 돌아감
                   Navigator.pop(context, true); // 수정 완료 후 true 값 반환
                 } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
