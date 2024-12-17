@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_application_seau/ui/pages/home/home_page.dart';
 import 'package:flutter_application_seau/ui/widgets/primary_button.dart';
+import 'package:flutter_application_seau/ui/pages/join/join_view_model.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CertificationPage extends StatefulWidget {
+class CertificationPage extends ConsumerStatefulWidget {
   const CertificationPage({super.key});
 
   @override
-  State<CertificationPage> createState() => _CertificationSelectionPageState();
+  ConsumerState<CertificationPage> createState() => _CertificationPageState();
 }
 
-class _CertificationSelectionPageState extends State<CertificationPage> {
+class _CertificationPageState extends ConsumerState<CertificationPage> {
   String selectedType = "freediving";
   String selectedLevel = "lv2";
 
   @override
   Widget build(BuildContext context) {
+    final joinViewModel = ref.watch(joinViewModelProvider.notifier);
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -154,13 +157,19 @@ class _CertificationSelectionPageState extends State<CertificationPage> {
             padding: const EdgeInsets.only(left: 18, right: 18, bottom: 60),
             child: PrimaryButton(
               text: "완료",
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => HomePage(),
-                  ),
-                );
+              onPressed: () async {
+                joinViewModel.setCertification(selectedType, selectedLevel);
+                try {
+                  await joinViewModel.completeSignUp();
+                  Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => HomePage()),
+                    (Route<dynamic> route) => false,
+                  );
+                } catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(e.toString())),
+                  );
+                }
               },
               backgroundColor: const Color(0xFF0770E9),
             ),

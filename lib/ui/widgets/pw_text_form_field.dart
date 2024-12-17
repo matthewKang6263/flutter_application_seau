@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class PwTextFormField extends StatelessWidget {
   final TextEditingController controller; // 컨트롤러 추가
 
-  const PwTextFormField({Key? key, required this.controller}) : super(key: key);
+  const PwTextFormField({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {

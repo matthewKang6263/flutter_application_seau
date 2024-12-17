@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_seau/ui/pages/home/home_page.dart';
+import 'package:flutter_application_seau/core/auth_service.dart';
 import 'package:flutter_application_seau/ui/widgets/primary_button.dart';
 import 'package:flutter_application_seau/ui/widgets/email_text_form_field.dart';
 import 'package:flutter_application_seau/ui/widgets/pw_text_form_field.dart';
-import 'package:flutter_application_seau/ui/pages/login/login_view_model.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_application_seau/ui/pages/home/home_page.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final emailController = TextEditingController(); // 이메일 컨트롤러 생성
-    final passwordController = TextEditingController(); // 비밀번호 컨트롤러 생성
-    final loginViewModel = LoginViewModel();
+    final emailController = TextEditingController();
+    final passwordController = TextEditingController();
+    final authService = AuthService();
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -39,32 +38,26 @@ class LoginPage extends StatelessWidget {
             PwTextFormField(controller: passwordController),
             const Spacer(),
             PrimaryButton(
-              text: "완료",
+              text: "로그인",
               onPressed: () async {
                 try {
-                  // 로그인 로직 실행
-                  await loginViewModel.signIn(
+                  final userCredential = await authService.signIn(
                     emailController.text,
                     passwordController.text,
                   );
-                  // 로그인 성공 시 홈 페이지로 이동
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const HomePage()),
-                  );
-                } on FirebaseAuthException catch (e) {
-                  // 에러 메시지 설정
-                  String errorMessage;
-                  if (e.code == 'user-not-found') {
-                    errorMessage = '등록되지 않은 이메일입니다.';
-                  } else if (e.code == 'wrong-password') {
-                    errorMessage = '잘못된 비밀번호입니다.';
+                  if (userCredential != null) {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => HomePage()),
+                    );
                   } else {
-                    errorMessage = '로그인에 실패했습니다: ${e.message}';
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('로그인에 실패했습니다.')),
+                    );
                   }
-                  // 에러 메시지 표시
+                } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(errorMessage)),
+                    SnackBar(content: Text(e.toString())),
                   );
                 }
               },

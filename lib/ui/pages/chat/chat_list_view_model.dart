@@ -2,29 +2,30 @@
 // 채팅방 목록을 가져오고, 업데이트하는 로직을 담당해요.
 
 import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_application_seau/data/model/chat.dart';
 import 'package:flutter_application_seau/data/repository/chat_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ChatListState {
   // 채팅방 목록을 담을 리스트
-  final List<Chat> chatRooms;
-  // 로딩 상태를 표시
-  final bool isLoading;
+  final List<Chat> chats;
+  // // 로딩 상태를 표시
+  // final bool isLoading;
 
   ChatListState({
-    required this.chatRooms,
-    this.isLoading = false,
+    required this.chats,
+    // this.isLoading = false,
   });
 
   // 상태 복사본을 만드는 메서드
   ChatListState copyWith({
-    List<Chat>? chatRooms,
+    List<Chat>? chats,
     bool? isLoading,
   }) {
     return ChatListState(
-      chatRooms: chatRooms ?? this.chatRooms,
-      isLoading: isLoading ?? this.isLoading,
+      chats: chats ?? this.chats,
+      // isLoading: isLoading ?? this.isLoading,
     );
   }
 }
@@ -37,33 +38,32 @@ class ChatListViewModel extends AutoDisposeNotifier<ChatListState> {
 
   @override
   ChatListState build() {
-    // 초기 상태 설정
-    return ChatListState(chatRooms: [], isLoading: true);
     // ViewModel이 생성될 때 채팅방 목록을 불러옵니다
-    _loadChatRooms();
+    _loadChats();
+    // 초기 상태 설정
+    return ChatListState(
+      chats: [],
+    );
   }
 
+  final auth = FirebaseAuth.instance;
   // 채팅방 목록을 불러오는 메서드
-  Future<void> _loadChatRooms() async {
-    // 현재 사용자 ID (임시로 하드코딩, 나중에 인증 시스템과 연동 필요)
-    const currentUserId = "현재_사용자_ID";
-
+  Future<void> _loadChats() async {
     try {
-      // 채팅방 목록 스트림 구독
+      // 3. 하드코딩된 ID 대신 현재 로그인된 사용자의 uid를 가져와
+      final currentUser = auth.currentUser;
+      if (currentUser == null) {
+        print('로그인된 사용자가 없습니다');
+        return;
+      }
       _chatSubscription =
-          _chatRepository.getChatRooms(currentUserId).listen((querySnapshot) {
-        // 스냅샷에서 채팅방 목록 추출
-        final chatRooms =
+          _chatRepository.getChats(currentUser.uid).listen((querySnapshot) {
+        final chats =
             querySnapshot.docs.map((doc) => Chat.fromFirestore(doc)).toList();
 
-        // 상태 업데이트
-        state = state.copyWith(
-          chatRooms: chatRooms,
-          isLoading: false,
-        );
+        state = state.copyWith(chats: chats);
       });
 
-      // ViewModel이 제거될 때 스트림 구독 해제
       ref.onDispose(() {
         _chatSubscription?.cancel();
       });

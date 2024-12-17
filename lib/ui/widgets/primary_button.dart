@@ -29,7 +29,8 @@ class PrimaryButton extends StatelessWidget {
         minimumSize: const Size(double.infinity, 50),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(4),
-          side: BorderSide(color: borderColor ?? Colors.transparent, width: 0.5),
+          side:
+              BorderSide(color: borderColor ?? Colors.transparent, width: 0.5),
         ),
         elevation: 0, // 음영 제거
       ),

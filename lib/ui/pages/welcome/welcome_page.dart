@@ -20,19 +20,14 @@ class WelcomePage extends StatelessWidget {
           ),
           Column(
             children: [
-              const Spacer(), // 상단 여백
-              // 로고와 텍스트
-              Column(
-                children: [
-                  // 로고 이미지
-                  Image.asset(
-                    "assets/images/logo_deepdive.png",
-                    width: 160,
-                  ),
-                ],
+              const Spacer(),
+              // 로고 이미지
+              Image.asset(
+                "assets/images/logo_deepdive.png",
+                width: 160,
               ),
               const Spacer(),
-              // 시작하기 버튼
+              // 가입하기 버튼
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 18),
                 child: PrimaryButton(
@@ -48,9 +43,8 @@ class WelcomePage extends StatelessWidget {
                   backgroundColor: const Color(0xFF0770E9),
                 ),
               ),
-              // 버튼 사이 간격 추가
               const SizedBox(height: 12),
-              // 로그인하기 버튼 (투명)
+              // 로그인하기 버튼
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 18),
                 child: TextButton(
@@ -67,7 +61,7 @@ class WelcomePage extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white, // 글자색은 흰색
+                      color: Colors.white,
                     ),
                   ),
                 ),
@@ -81,7 +75,7 @@ class WelcomePage extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 12,
-                    color: Colors.white.withOpacity(0.8), // 흰색에 약간 투명도 추가
+                    color: Colors.white.withOpacity(0.8),
                   ),
                 ),
               ),
