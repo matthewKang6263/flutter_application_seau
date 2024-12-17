@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_seau/data/model/app_user.dart';
+import 'package:flutter_application_seau/ui/pages/home/_tab/my_profile_tab/widgets/profile_tab_app_bar.dart';
 import 'package:flutter_application_seau/ui/pages/join/join_view_model.dart';
 import 'package:flutter_application_seau/ui/pages/mypage/certification_edit/certification_edit_page.dart';
 import 'package:flutter_application_seau/ui/pages/mypage/profile_edit/profile_edit_page.dart';
@@ -9,8 +10,8 @@ import 'package:flutter_application_seau/ui/widgets/user_profile_image.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class MyPage extends ConsumerWidget {
-  const MyPage({super.key});
+class ProfileTab extends ConsumerWidget {
+  const ProfileTab({super.key});
 
   void _showToast(String message) {
     Fluttertoast.showToast(
@@ -29,14 +30,7 @@ class MyPage extends ConsumerWidget {
     final userFuture = userRepository.getUser(userRepository.getCurrentUserId());
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          '나의 프로필',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-        backgroundColor: Colors.white,
-        elevation: 0,
-      ),
+      appBar: const ProfileTabAppBar(),
       backgroundColor: Colors.grey[100],
       body: FutureBuilder<AppUser?>(
         future: userFuture,

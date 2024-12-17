@@ -1,5 +1,8 @@
+import 'dart:io'; 
+import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_application_seau/data/model/app_user.dart';
 
 class UserRepository {
@@ -7,6 +10,8 @@ class UserRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   // Firebase Authentication 인스턴스
   final auth.FirebaseAuth _auth = auth.FirebaseAuth.instance;
+  // Firebase Storage 인스턴스
+  final FirebaseStorage _storage = FirebaseStorage.instance; 
 
   // 새 사용자 생성
   Future<void> createUser(AppUser user) async {
@@ -46,6 +51,22 @@ class UserRepository {
       return user.uid;
     } else {
       throw Exception('로그인된 사용자가 없습니다.');
+    }
+  }
+
+// 프로필 이미지 업로드 및 URL 업데이트
+  Future<String?> uploadProfileImage(String userId, XFile image) async {
+    try {
+      // Firebase Storage에 이미지 업로드
+      final storageRef = _storage.ref().child('profile_images/$userId/${image.name}');
+      await storageRef.putFile(File(image.path));
+      // 업로드된 이미지의 다운로드 URL 가져오기
+      final downloadUrl = await storageRef.getDownloadURL();
+      // Firestore에 프로필 이미지 URL 업데이트
+      await updateUser(userId, {'profileImageUrl': downloadUrl});
+      return downloadUrl;
+    } catch (e) {
+      throw Exception('프로필 이미지 업로드 중 오류가 발생했습니다: $e');
     }
   }
 

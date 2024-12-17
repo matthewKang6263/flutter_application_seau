@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_application_seau/ui/pages/home/home_page.dart';
 import 'package:flutter_application_seau/ui/widgets/primary_button.dart';
 
@@ -36,7 +35,7 @@ class _CertificationSelectionPageState extends State<CertificationEditPage> {
                 children: [
                   const SizedBox(height: 20),
                   const Text(
-                    "자격증 정보를 선택해주세요",
+                    "자격증 수정",
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -137,7 +136,7 @@ class _CertificationSelectionPageState extends State<CertificationEditPage> {
           Padding(
             padding: const EdgeInsets.only(left: 18, right: 18, bottom: 60),
             child: PrimaryButton(
-              text: "완료",
+              text: "수정하기",
               onPressed: () {
                 Navigator.push(
                   context,

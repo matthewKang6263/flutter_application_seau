@@ -43,7 +43,8 @@ dependencies:
   firebase_core: ^3.8.1
   cloud_firestore: ^5.5.1
   dio: ^5.7.0
-  image_picker: ^1.0.0
+  image_picker: ^1.1.2
+  firebase_storage: ^12.3.7
 
 dev_dependencies:
   flutter_test:
@@ -67,7 +68,10 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
+  assets:
+    - assets/images/welcome_bg.png
+    - assets/images/logo_deepdive.png
+    - assets/images/default_profile_image.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
@@ -97,7 +101,3 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
 
-  assets:
-    - assets/images/welcome_bg.png
-    - assets/images/logo_deepdive.png
-    - assets/images/default_profile_image.png
