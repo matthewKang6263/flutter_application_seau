@@ -91,7 +91,7 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                     CircleAvatar(
                       radius: 60,
                       backgroundImage: user.profileImageUrl != null &&
-                              user.profileImageUrl!.isNotEmpty
+                              user.profileImageUrl!.startsWith('http')
                           ? NetworkImage(user.profileImageUrl!)
                           : const AssetImage(
                                   'assets/images/default_profile_image.png')
