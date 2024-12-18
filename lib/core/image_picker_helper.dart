@@ -1,5 +1,3 @@
-// lib/utils/image_picker_helper.dart
-
 import 'package:image_picker/image_picker.dart';
 
 class ImagePickerHelper {

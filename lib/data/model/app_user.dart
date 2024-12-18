@@ -9,7 +9,7 @@ class AppUser {
   final String certificationLevel;
   final String? profileImageUrl;
 
-  AppUser ({
+  AppUser({
     required this.id,
     required this.nickname,
     required this.email,
@@ -19,7 +19,7 @@ class AppUser {
     this.profileImageUrl,
   });
 
-   // copyWith 메서드 추가 (프로필 수정 시 원하는 항목만 수정)
+  // copyWith 메서드 추가 (프로필 수정 시 원하는 항목만 수정)
   AppUser copyWith({
     String? id,
     String? nickname,

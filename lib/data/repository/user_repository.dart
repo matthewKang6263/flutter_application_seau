@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_application_seau/data/model/app_user.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class UserRepository {
   // Firestore 인스턴스
@@ -11,6 +12,11 @@ class UserRepository {
   final auth.FirebaseAuth _auth = auth.FirebaseAuth.instance;
   // Firebase Storage 인스턴스
   final FirebaseStorage _storage = FirebaseStorage.instance;
+
+// UserRepository의 Provider 정의
+  final userRepositoryProvider = Provider<UserRepository>((ref) {
+    return UserRepository();
+  });
 
   // 새 사용자 생성
   Future<void> createUser(AppUser user) async {

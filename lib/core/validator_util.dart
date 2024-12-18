@@ -1,5 +1,3 @@
-// lib/utils/validator_util.dart
-
 class ValidatorUtil {
   // 이메일 유효성 검사
   static String? validateEmail(String? value) {

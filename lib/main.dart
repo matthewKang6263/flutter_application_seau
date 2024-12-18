@@ -1,7 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_seau/firebase_options.dart';
-import 'package:flutter_application_seau/ui/pages/welcome/welcome_page.dart';
+import 'package:flutter_application_seau/interface/pages/welcome/welcome_page.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() async {
@@ -14,7 +15,7 @@ void main() async {
   );
 
   // 앱 실행
-  runApp(ProviderScope(child: MyApp()));
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -22,6 +23,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: WelcomePage());
+    return const MaterialApp(home: WelcomePage());
   }
 }
