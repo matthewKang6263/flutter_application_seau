@@ -3,32 +3,63 @@
 // chat_detail_receive_item.dart
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_seau/data/repository/chat_repository.dart';
 import 'package:flutter_application_seau/ui/widgets/user_profile_image.dart';
 
-class ChatDetailReceiveItem extends StatelessWidget {
+class ChatDetailReceiveItem extends StatefulWidget {
   // 프로필 이미지 URL, 이미지 표시 여부, 메시지 내용, 시간을 받아옵니다
-  final String? imgUrl;
+  final String? userImg;
   final bool showProfile; // 연속된 메시지일 경우 프로필을 숨기기 위한 flag
   final String content;
   final DateTime dateTime;
   final String userName;
+  final String senderId;
 
   const ChatDetailReceiveItem({
-    required this.imgUrl,
+    required this.userImg,
     required this.showProfile,
     required this.content,
     required this.dateTime,
     required this.userName,
+    required this.senderId,
   });
 
   @override
+  State<ChatDetailReceiveItem> createState() => _ChatDetailReceiveItemState();
+}
+
+class _ChatDetailReceiveItemState extends State<ChatDetailReceiveItem> {
+  String? senderName;
+  @override
+  void initState() {
+    super.initState();
+    _loadSenderInfo(); // 발신자 정보 로드
+  }
+
+  Future<void> _loadSenderInfo() async {
+    try {
+      final user = await ChatRepository().getUser(widget.senderId);
+      print('Loaded user data: ${user?.toMap()}'); // 로드된 데이터 확인
+
+      if (user != null) {
+        setState(() {
+          senderName = user.nickname; // 실제 사용자 닉네임으로 설정
+        });
+      }
+    } catch (e) {
+      print('발신자 정보 로드 중 오류: $e');
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final displayName = senderName ?? '사용자';
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start, // 상단 정렬
       children: [
         // 프로필 이미지나 공백
-        showProfile
-            ? UserProfileImage(dimension: 40, imgUrl: imgUrl)
+        widget.showProfile
+            ? UserProfileImage(dimension: 40, imgUrl: widget.userImg)
             : SizedBox(width: 40),
         SizedBox(width: 8),
 
@@ -63,7 +94,7 @@ class ChatDetailReceiveItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      userName,
+                      widget.userName,
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
@@ -72,7 +103,7 @@ class ChatDetailReceiveItem extends StatelessWidget {
                     SizedBox(height: 4),
                     Container(
                       child: Text(
-                        content,
+                        widget.content,
                         style: TextStyle(
                           fontSize: 14,
                           height: 1.4,
@@ -87,7 +118,7 @@ class ChatDetailReceiveItem extends StatelessWidget {
               SizedBox(height: 4),
               // 시간 표시
               Text(
-                _formatTime(dateTime),
+                _formatTime(widget.dateTime),
                 style: TextStyle(
                   fontSize: 12,
                   color: Colors.grey[600],
