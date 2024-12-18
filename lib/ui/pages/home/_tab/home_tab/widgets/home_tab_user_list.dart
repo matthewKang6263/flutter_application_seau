@@ -149,6 +149,7 @@ class _HomeTabUserListState extends ConsumerState<HomeTabUserList> {
             child: RefreshIndicator(
               onRefresh: _loadUsers,
               child: ListView.separated(
+                padding: EdgeInsets.only(top: 0),
                 itemCount: filteredUsers.length,
                 separatorBuilder: (context, index) => Divider(
                   height: 1,
