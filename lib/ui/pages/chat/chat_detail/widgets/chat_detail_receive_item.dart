@@ -8,7 +8,7 @@ import 'package:flutter_application_seau/ui/widgets/user_profile_image.dart';
 
 class ChatDetailReceiveItem extends StatefulWidget {
   // 프로필 이미지 URL, 이미지 표시 여부, 메시지 내용, 시간을 받아옵니다
-  final String? imgUrl;
+  final String? userImg;
   final bool showProfile; // 연속된 메시지일 경우 프로필을 숨기기 위한 flag
   final String content;
   final DateTime dateTime;
@@ -16,7 +16,7 @@ class ChatDetailReceiveItem extends StatefulWidget {
   final String senderId;
 
   const ChatDetailReceiveItem({
-    required this.imgUrl,
+    required this.userImg,
     required this.showProfile,
     required this.content,
     required this.dateTime,
@@ -39,6 +39,8 @@ class _ChatDetailReceiveItemState extends State<ChatDetailReceiveItem> {
   Future<void> _loadSenderInfo() async {
     try {
       final user = await ChatRepository().getUser(widget.senderId);
+      print('Loaded user data: ${user?.toMap()}'); // 로드된 데이터 확인
+
       if (user != null) {
         setState(() {
           senderName = user.nickname; // 실제 사용자 닉네임으로 설정
@@ -57,7 +59,7 @@ class _ChatDetailReceiveItemState extends State<ChatDetailReceiveItem> {
       children: [
         // 프로필 이미지나 공백
         widget.showProfile
-            ? UserProfileImage(dimension: 40, imgUrl: widget.imgUrl)
+            ? UserProfileImage(dimension: 40, imgUrl: widget.userImg)
             : SizedBox(width: 40),
         SizedBox(width: 8),
 

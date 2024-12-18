@@ -220,15 +220,18 @@ class _HomeTabUserListState extends ConsumerState<HomeTabUserList> {
                           );
 
                           // 채팅 상세 페이지로 이동 (방금 수정한 부분)
-                          Navigator.push(context, MaterialPageRoute(
-                            builder: (context) {
-                              return ChatDetailPage(
-                                userName: user.nickname,
-                                userImg: user.profileImageUrl,
-                                chatId: chatId, // (방금 수정한 부분)
-                              );
-                            },
-                          ));
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return ChatDetailPage(
+                                  userName: user.nickname,
+                                  userImg: user.profileImageUrl,
+                                  chatId: chatId, // (방금 수정한 부분)
+                                );
+                              },
+                            ),
+                          );
                         } catch (e) {
                           // 에러 처리 추가 (방금 수정한 부분)
                           ScaffoldMessenger.of(context).showSnackBar(

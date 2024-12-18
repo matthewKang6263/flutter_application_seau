@@ -72,7 +72,7 @@ class ChatDetailPage extends StatelessWidget {
                               dateTime: timestamp?.toDate() ?? DateTime.now(),
                             )
                           : ChatDetailReceiveItem(
-                              imgUrl: userImg,
+                              userImg: userImg,
                               showProfile: _shouldShowProfile(messages, index),
                               userName: userName,
                               content: content,
