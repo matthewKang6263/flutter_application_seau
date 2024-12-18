@@ -88,13 +88,20 @@ class UserProfileImage extends StatelessWidget {
       child: Stack(
         children: [
           // 프로필 이미지
+          // CircleAvatar(
+          //   radius: dimension / 2,
+          //   backgroundImage: imgUrl != null && imgUrl!.isNotEmpty
+          //       // URL이 있으면 네트워크 이미지 사용
+          //       ? NetworkImage(imgUrl!) as ImageProvider
+          //       // URL이 없으면 로컬 기본 이미지 사용
+          //       : AssetImage('assets/images/default_profile_image.png'),
+          // ),
           CircleAvatar(
             radius: dimension / 2,
-            backgroundImage: imgUrl != null && imgUrl!.isNotEmpty
-                // URL이 있으면 네트워크 이미지 사용
-                ? NetworkImage(imgUrl!) as ImageProvider
-                // URL이 없으면 로컬 기본 이미지 사용
-                : AssetImage('assets/images/default_profile_image.png'),
+            backgroundImage: imgUrl != null && imgUrl!.startsWith('http')
+                ? NetworkImage(imgUrl!) // 네트워크 이미지인 경우
+                : AssetImage('assets/images/default_profile_image.png')
+                    as ImageProvider, // 로컬 이미지인 경우
           ),
           //
           // 수정 아이콘

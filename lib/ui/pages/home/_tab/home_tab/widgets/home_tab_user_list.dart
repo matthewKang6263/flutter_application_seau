@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_seau/data/repository/chat_repository.dart';
+import 'package:flutter_application_seau/ui/pages/chat/chat_detail/chat_detail_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_application_seau/data/model/app_user.dart';
 import 'package:flutter_application_seau/data/repository/user_repository.dart';
@@ -167,8 +169,8 @@ class _HomeTabUserListState extends ConsumerState<HomeTabUserList> {
                               user.profileImageUrl!.startsWith('http')
                           ? NetworkImage(user.profileImageUrl!)
                           : AssetImage(
-                                  'assets/images/default_profile_image.png')
-                              as ImageProvider,
+                              'assets/images/default_profile_image.png'),
+                      // as ImageProvider, 12/17 삭제
                     ),
                     title: Text(
                       user.nickname,
@@ -197,8 +199,45 @@ class _HomeTabUserListState extends ConsumerState<HomeTabUserList> {
                       ],
                     ),
                     trailing: OutlinedButton.icon(
-                      onPressed: () {
-                        // TODO: 채팅 기능 구현
+                      onPressed: () async {
+                        try {
+                          // 현재 로그인한 사용자 ID 가져오기 (방금 수정한 부분)
+                          final currentUser = await ref
+                              .read(authServiceProvider)
+                              .getCurrentUser();
+                          if (currentUser == null) {
+                            throw Exception('로그인이 필요합니다.');
+                          }
+
+                          // ChatRepository 인스턴스 생성 (방금 수정한 부분)
+                          final chatRepository = ChatRepository();
+
+                          // 채팅방 생성 또는 가져오기 (방금 수정한 부분)
+                          final chatId =
+                              await chatRepository.createOrGetChatRoom(
+                            currentUser.id,
+                            user.id,
+                          );
+
+                          // 채팅 상세 페이지로 이동 (방금 수정한 부분)
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return ChatDetailPage(
+                                  userName: user.nickname,
+                                  userImg: user.profileImageUrl,
+                                  chatId: chatId, // (방금 수정한 부분)
+                                );
+                              },
+                            ),
+                          );
+                        } catch (e) {
+                          // 에러 처리 추가 (방금 수정한 부분)
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('채팅방 생성 중 오류가 발생했습니다: $e')),
+                          );
+                        }
                       },
                       icon: Icon(
                         Icons.chat_bubble_outline,
