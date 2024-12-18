@@ -39,12 +39,16 @@ class _ChatDetailReceiveItemState extends State<ChatDetailReceiveItem> {
   Future<void> _loadSenderInfo() async {
     try {
       final user = await ChatRepository().getUser(widget.senderId);
-      print('Loaded user data: ${user?.toMap()}'); // 로드된 데이터 확인
+      // 데이터 확인을 위한 print문 추가
+      print('Sender ID: ${widget.senderId}');
+      print('Loaded user: ${user?.nickname}');
 
       if (user != null) {
         setState(() {
           senderName = user.nickname; // 실제 사용자 닉네임으로 설정
         });
+        // setState 후 값 확인
+        print('Set senderName to: $senderName');
       }
     } catch (e) {
       print('발신자 정보 로드 중 오류: $e');
@@ -53,7 +57,7 @@ class _ChatDetailReceiveItemState extends State<ChatDetailReceiveItem> {
 
   @override
   Widget build(BuildContext context) {
-    final displayName = senderName ?? '사용자';
+    final displayName = senderName ?? widget.userName;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start, // 상단 정렬
       children: [
@@ -94,7 +98,7 @@ class _ChatDetailReceiveItemState extends State<ChatDetailReceiveItem> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.userName,
+                      displayName, // widget.userName 대신 displayName 사용
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
