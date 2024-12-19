@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_application_seau/data/repository/chat_repository.dart';
 
 class ChatDetailInput extends StatefulWidget {
   const ChatDetailInput({Key? key, required this.chatId}) : super(key: key);
@@ -15,6 +16,7 @@ class ChatDetailInput extends StatefulWidget {
 class _ChatDetailInputState extends State<ChatDetailInput> {
   // 입력된 텍스트를 관리할 컨트롤러
   final TextEditingController _controller = TextEditingController();
+  final ChatRepository _chatRepository = ChatRepository();
 
   @override
   void dispose() {
@@ -34,16 +36,12 @@ class _ChatDetailInputState extends State<ChatDetailInput> {
         print("사용자가 로그인하지 않았습니다."); // 에러 로그 출력
         return;
       }
-      // Firestore에 메시지 저장
-      await FirebaseFirestore.instance
-          .collection('chats') // chats 컬렉션
-          .doc(widget.chatId) // 특정 채팅방 문서
-          .collection('messages') // messages 서브컬렉션
-          .add({
-        'senderId': currentUserId,
-        'content': message, // 메시지 내용
-        'timestamp': FieldValue.serverTimestamp(), // 서버 타임스탬프
-      });
+      // 수정된 부분: ChatRepository 사용
+      await _chatRepository.sendMessage(
+        chatId: widget.chatId,
+        id: currentUserId,
+        content: message,
+      );
 
       _controller.clear(); // 입력 필드 비우기
     } catch (e) {
