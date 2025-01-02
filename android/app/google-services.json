@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "286516419972",
-    "project_id": "sea-u-cceb9",
-    "storage_bucket": "sea-u-cceb9.firebasestorage.app"
+    "project_number": "383702356051",
+    "project_id": "koala-diving",
+    "storage_bucket": "koala-diving.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:286516419972:android:8c823aa2c491282f7c11d1",
+        "mobilesdk_app_id": "1:383702356051:android:3bf0779729a6f24fd0f6a6",
         "android_client_info": {
-          "package_name": "com.example.flutter_"
+          "package_name": "com.example.koa"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDPp93GnAz22teVA1mQLN8SsEKYkdCXoKo"
+          "current_key": "AIzaSyCiV7oyuyjnEk9c6pgukQMbg9Esyxhdcx4"
         }
       ],
       "services": {

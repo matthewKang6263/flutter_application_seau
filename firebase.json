@@ -1,1 +1,30 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"sea-u-cceb9","appId":"1:286516419972:android:8c823aa2c491282f7c11d1","fileOutput":"android/app/google-services.json"}},"ios":{"default":{"projectId":"sea-u-cceb9","appId":"1:286516419972:ios:5aff53746ece57977c11d1","uploadDebugSymbols":false,"fileOutput":"ios/Runner/GoogleService-Info.plist"}},"dart":{"lib/firebase_options.dart":{"projectId":"sea-u-cceb9","configurations":{"android":"1:286516419972:android:8c823aa2c491282f7c11d1","ios":"1:286516419972:ios:5aff53746ece57977c11d1"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "koala-diving",
+          "appId": "1:383702356051:android:3bf0779729a6f24fd0f6a6",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "koala-diving",
+          "appId": "1:383702356051:ios:95219054735685b2d0f6a6",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "koala-diving",
+          "configurations": {
+            "android": "1:383702356051:android:3bf0779729a6f24fd0f6a6",
+            "ios": "1:383702356051:ios:95219054735685b2d0f6a6"
+          }
+        }
+      }
+    }
+  }
+}

@@ -50,19 +50,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDPp93GnAz22teVA1mQLN8SsEKYkdCXoKo',
-    appId: '1:286516419972:android:8c823aa2c491282f7c11d1',
-    messagingSenderId: '286516419972',
-    projectId: 'sea-u-cceb9',
-    storageBucket: 'sea-u-cceb9.firebasestorage.app',
+    apiKey: 'AIzaSyCiV7oyuyjnEk9c6pgukQMbg9Esyxhdcx4',
+    appId: '1:383702356051:android:3bf0779729a6f24fd0f6a6',
+    messagingSenderId: '383702356051',
+    projectId: 'koala-diving',
+    storageBucket: 'koala-diving.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAyXyICd3YM3Awesa1MiTdImGT7F0B47Ss',
-    appId: '1:286516419972:ios:5aff53746ece57977c11d1',
-    messagingSenderId: '286516419972',
-    projectId: 'sea-u-cceb9',
-    storageBucket: 'sea-u-cceb9.firebasestorage.app',
+    apiKey: 'AIzaSyBILRVSKGhANDhjV44z3BNQp_vU95jTBNk',
+    appId: '1:383702356051:ios:95219054735685b2d0f6a6',
+    messagingSenderId: '383702356051',
+    projectId: 'koala-diving',
+    storageBucket: 'koala-diving.firebasestorage.app',
     iosBundleId: 'com.example.flutterApplicationSeau',
   );
 }
